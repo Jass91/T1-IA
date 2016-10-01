@@ -16,7 +16,10 @@ public abstract class Border {
 	public int getSize(){
 		return elements.size();
 	}
-	public abstract void add(GameState state);
+	
+	public void add(GameState newState) {
+		elements.add(newState);
+	}
 	
 	public abstract GameState get();
 }

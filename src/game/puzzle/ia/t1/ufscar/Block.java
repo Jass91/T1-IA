@@ -1,22 +1,21 @@
 package game.puzzle.ia.t1.ufscar;
 
+
 public class Block {
 
-	public enum Type {White, Blue, Empty};
-	
-	private Type type;
+	private BlockType type;
 	private int id;
 	
-	public Block(Type color, int id){
+	public Block(BlockType color, int id){
 		this.type = color;
 		this.id = id;
 	}
 	
-	public void setType(Type type){
+	public void setType(BlockType type){
 		this.type = type;
 	}
 	
-	public Type getType(){
+	public BlockType getType(){
 		return this.type;
 	}
 	

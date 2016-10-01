@@ -11,8 +11,8 @@ public class Game {
 
 		Game game = new Game();
 
-		int n = 2;
-		String gameInput = "BA-AB";
+		int n = 7;
+		String gameInput = "AAABBABA-ABABBB";
 
 		// tipos de agente: BL, BP, BPL, BPI, BCU ou A*
 		String agentType = "BL";
@@ -39,7 +39,7 @@ public class Game {
 		}
 
 		// executa o agent
-		List<GameState> solutionPath = agent.run();
+		List<GameState> solutionPath = agent.resolve();
 		
 		if(solutionPath == null){
 			System.out.println();
@@ -47,6 +47,8 @@ public class Game {
 		}else{
 			System.out.println();
 			game.showGoalState(agent.getGoalState());
+			System.out.println("Nós Gerados: " + agent.getNumberOfGeneratedNodes());
+			System.out.println("Nós Explorados: " + agent.getNumberOfExploredNodes());
 			game.showSolution(solutionPath);
 		}
 	}
@@ -56,26 +58,24 @@ public class Game {
 		System.out.print("Solução encontrada: ");
 		for(Block block : state.getGameConfig()){
 
-			Block.Type type = block.getType();
+			BlockType type = block.getType();
 
-			if(type == Block.Type.White){
+			if(type == BlockType.White){
 			   System.out.print("B");
-			}else if(type == Block.Type.Blue){
+			}else if(type == BlockType.Blue){
 				System.out.print("A");
-			}else if(type == Block.Type.Empty){
+			}else if(type == BlockType.Empty){
 				System.out.print("-");
 			}
 		}
 		
-		System.out.println();
 		System.out.println();
 	}
 	
 	public void showSolution(List<GameState> solutionPath) {
 		
 		System.out.println("Sequência de ações:");
-		for(int i = solutionPath.size(); i > 0; i--){
-			GameState state = solutionPath.get(i - 1);
+		for(GameState state : solutionPath){
 			if(state.getAction() != null)
 				state.getAction().showMovement();
 			else{
@@ -94,13 +94,13 @@ public class Game {
 		
 		for(char c : gameInput.toCharArray()){
 			if(c == 'B'){
-				Block block = new Block(Block.Type.White, i);
+				Block block = new Block(BlockType.White, i);
 				gameConfig[i] = block;
 			}else if(c == 'A'){
-				Block block = new Block(Block.Type.Blue, i);
+				Block block = new Block(BlockType.Blue, i);
 				gameConfig[i] = block;
 			}else if(c == '-'){
-				Block block = new Block(Block.Type.Empty, i);
+				Block block = new Block(BlockType.Empty, i);
 				gameConfig[i] = block;
 				emptyPos = i;
 			}

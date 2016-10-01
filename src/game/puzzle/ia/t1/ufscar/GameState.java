@@ -20,7 +20,8 @@ public class GameState {
 	private void setId(){
 		String id = "";
 		for(Block block : gameConfig){
-			id += block.getId();
+			int type = block.getType().getValue(); 
+			id += type;
 		}
 		
 		this.id = id;
