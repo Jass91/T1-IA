@@ -7,6 +7,8 @@ public class GameState {
 	private Action action;
 	private String id;
 	private int emptyPosition;
+	private int depth;
+	private int coast;
 	
 	public GameState(Block[] gameConfig, int emptyPosition, GameState parent, Action action){
 		this.parent = parent;
@@ -14,7 +16,33 @@ public class GameState {
 		this.action = action;
 		this.emptyPosition = emptyPosition;
 		
+		setDepth();
 		setId();
+		setCoastToGetHere();
+	}
+
+	private void setCoastToGetHere() {
+		if(parent == null)
+			this.coast = 0;
+		else{
+			this.coast = parent.getCoastToGetHere() + action.getCoast();
+		}
+		
+	}
+
+	public int getCoastToGetHere() {
+		return coast;
+	}
+
+	private void setDepth(){
+		if(parent == null)
+			this.depth = 0;
+		else
+			this.depth = parent.getDepth() + 1;
+	}
+	
+	public int getDepth() {
+		return depth;
 	}
 
 	private void setId(){

@@ -5,6 +5,8 @@ import java.util.List;
 import agent.puzzle.ia.t1.ufscar.Agent;
 import agent.puzzle.ia.t1.ufscar.BFSAgent;
 import agent.puzzle.ia.t1.ufscar.DFSAgent;
+import agent.puzzle.ia.t1.ufscar.IDFSAgent;
+import agent.puzzle.ia.t1.ufscar.LDFSAgent;
 
 public class Game {
 
@@ -16,8 +18,10 @@ public class Game {
 		String gameInput = "BA-AB";
 
 		// tipos de agente: BL, BP, BPL, BPI, BCU ou A*
-		String agentType = "BL";
+		String agentType = "BPI";
 
+		int limit = 10;
+		
 		// estado inicial;
 		GameState initialState = game.getInitialState(gameInput, n);
 
@@ -33,8 +37,10 @@ public class Game {
 			agent = new DFSAgent(initialState, n);
 		}else if(agentType == "BPL"){
 			System.out.println("*** Busca em profundidade limitada ***");
+			agent = new LDFSAgent(initialState, n, limit);
 		}else if(agentType == "BPI"){
 			System.out.println("*** Busca em profundidade iterativa ***");
+			agent = new IDFSAgent(initialState, n, limit);
 		}else if(agentType == "BCU"){
 			System.out.println("*** Busca de custo uniforme ***");
 		}else if(agentType == "A*"){
@@ -49,14 +55,15 @@ public class Game {
 			System.out.println("Não tem solução");
 		}else{
 			System.out.println();
+			System.out.println("Tamanho do problema: " + n);
+			System.out.println("Nós Gerados: " + agent.getNumberOfGeneratedNodes());
+			System.out.println("Nós Explorados: " + agent.getNumberOfExploredNodes());
+			System.out.println("Custo da Solução: " + agent.getSolutionCoast());
+			System.out.println("Profundidade da Solução: " + agent.getDepthOfSolution());
 			System.out.print("Solução encontrada: ");
 			agent.showGoalState();
 			
 			System.out.println();
-			System.out.println("Nós Gerados: " + agent.getNumberOfGeneratedNodes());
-			System.out.println("Nós Explorados: " + agent.getNumberOfExploredNodes());
-			System.out.println("Profundidade da Solução: " + agent.getDepthOfSolution());
-			
 			System.out.println();
 			agent.tellSolution();
 		}

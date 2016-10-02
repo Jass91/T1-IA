@@ -2,7 +2,6 @@ package agent.puzzle.ia.t1.ufscar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import game.puzzle.ia.t1.ufscar.Action;
 import game.puzzle.ia.t1.ufscar.Block;
@@ -12,9 +11,6 @@ import util.puzzle.ia.t1.ufscar.Border;
 
 // define o comportamento comum a todos os agentes
 public abstract class Agent {
-
-	// armazena como chave o id do estado e o valor como "Generated", "Visited" ou "Explored"
-	protected HashMap<String, String> nodeStatus;
 
 	protected int problemSize;
 	protected int numberOfGeneratedNodes;
@@ -30,8 +26,7 @@ public abstract class Agent {
 		goalState = null;
 		numberOfExploredNodes = 0;
 		numberOfGeneratedNodes = 0;
-		depth = 1;
-		nodeStatus = new HashMap<String, String>();
+		depth = 0;
 	}
 
 	// executa a ação (troca src com dst), resultando em um novo estado
@@ -89,9 +84,6 @@ public abstract class Agent {
 			// inicia a busca a partir do estado
 			expandNode(state);
 
-			// marca o estado como explorado;
-			nodeStatus.put(state.getId(), "Explored");
-
 			// incrementa o numero de nós explorados
 			numberOfExploredNodes++;
 
@@ -126,48 +118,26 @@ public abstract class Agent {
 		Block[] gameConfig = state.getGameConfig();
 		int n = (2 * problemSize) + 1;
 
-		/*
-		// TODO: teste remover depois
-		System.out.print("Testando state #" + state.getId() + " = (");
-		for(Block block : gameConfig){
-
-			BlockType type = block.getType();
-
-			if(type == BlockType.White){
-			   System.out.print("B");
-			}else if(type == BlockType.Blue){
-				System.out.print("A");
-			}else if(type == BlockType.Empty){
-				System.out.print("-");
-			}
-		}
-
-		System.out.print("): ");
-		 */
 		for(int i = 1; i < n; i++){
 
 			// se não é objetivo
 			if( (gameConfig[i - 1].getType() == BlockType.Blue) &&
 					(gameConfig[i].getType() == BlockType.White)){
 
-				//System.out.println("Não é objetivo!");
 				return false;
 
-				// outro caso que não é objetivo
+			// outro caso que não é objetivo
 			}else if((i >= 2)){
 
 				if( (gameConfig[i - 1].getType() == BlockType.Empty) &&
 						(gameConfig[i - 2].getType() == BlockType.Blue) &&
 						(gameConfig[i].getType() == BlockType.White)){
 
-					//System.out.println("Não é objetivo!");
 					return false;
 				}
 
 			}
 		}
-
-		//System.out.println("É objetivo: ");
 
 		return true;
 	}
@@ -180,8 +150,9 @@ public abstract class Agent {
 		return numberOfGeneratedNodes;
 	}
 
+	// retorna a profundidade do nó meta
 	public int getDepthOfSolution(){
-		return depth;
+		return goalState.getDepth();
 	}
 
 	public GameState getGoalState() {
@@ -196,93 +167,8 @@ public abstract class Agent {
 		return this.border.get();
 	}
 	
-	// executa a ação de expandir o nó, porém NÃO desconsidera nós já gerados
-	public void expandNodeAsTree(GameState state) {
-
-		// se o nó ja foi explorado então é ignorado
-		//if(nodeStatus.get(state.getId()) == "Explored"){
-		//return;
-		//}
-
-		int emptyPos = state.getEmptyPosition();
-		int n = (2 * problemSize) + 1;
-
-		// gera todos os filhos do estado atual
-		for(int i = 0; i < n; i++){
-
-			if(i == emptyPos)
-				continue;
-
-			// custo do movimento
-			int distance = Math.abs(i - emptyPos);
-
-			// se o movimento é legal
-			if(distance <= problemSize){
-
-				// retorna um novo estado movendo-se de i para emptyPos a partir do estado atual
-				GameState newState = move(state, i, emptyPos);
-
-				// incrementa o numero de nós gerados
-				numberOfGeneratedNodes++;
-
-				// se ainda nao foi gerado esse estado
-				//String status = nodeStatus.get(newState.getId());
-				//if(status == null){
-
-				// insere o novo estado na borda
-				border.add(newState);
-
-				// marca como já gerado
-				//nodeStatus.put(newState.getId(), "Generated");
-				//}
-			}
-		}
-
-	}
-
-	// executa a ação de expandir o nó, porém desconsidera nós já gerados
-	public void expandNodeAsGraph(GameState state) {
-
-		// se o nó ja foi explorado então é ignorado
-		if(nodeStatus.get(state.getId()) == "Explored"){
-			int x = 3;
-			System.out.print(x);
-			return;
-		}
-
-		int emptyPos = state.getEmptyPosition();
-		int n = (2 * problemSize) + 1;
-
-		// gera todos os filhos do estado atual
-		for(int i = 0; i < n; i++){
-
-			if(i == emptyPos)
-				continue;
-
-			// custo do movimento
-			int distance = Math.abs(i - emptyPos);
-
-			// se o movimento é legal
-			if(distance <= problemSize){
-
-				// retorna um novo estado movendo-se de i para emptyPos a partir do estado atual
-				GameState newState = move(state, i, emptyPos);
-
-				// incrementa o numero de nós gerados
-				numberOfGeneratedNodes++;
-
-				// se ainda nao foi gerado esse estado
-				String status = nodeStatus.get(newState.getId());
-				if(status == null){
-
-					// insere o novo estado na borda
-					border.add(newState);
-
-					// marca como já gerado
-					nodeStatus.put(newState.getId(), "Generated");
-				}
-			}
-		}
+	public int getSolutionCoast(){
+		return goalState.getCoastToGetHere();
 	}
 	
 	// exibe o estado meta
@@ -314,4 +200,5 @@ public abstract class Agent {
 	}
 	
 	public abstract void expandNode(GameState node);
+
 }

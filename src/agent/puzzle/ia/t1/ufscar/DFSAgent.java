@@ -4,7 +4,7 @@ import game.puzzle.ia.t1.ufscar.GameState;
 import util.puzzle.ia.t1.ufscar.Stack;
 
 // agente que executa a busca em profundidade
-public class DFSAgent extends Agent {
+public class DFSAgent extends GraphAgent {
 
 	public DFSAgent(GameState initialState, int problemSize) {
 		super(initialState, problemSize);
@@ -12,10 +12,5 @@ public class DFSAgent extends Agent {
 		// inicializa a borda como uma pilha
 		this.border = new Stack();
 	}
-
-	@Override
-	public void expandNode(GameState node) {
-		expandNodeAsGraph(node);
-	}
-
+	
 }
