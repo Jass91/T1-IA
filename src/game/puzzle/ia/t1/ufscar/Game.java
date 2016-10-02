@@ -4,6 +4,7 @@ import java.util.List;
 
 import agent.puzzle.ia.t1.ufscar.Agent;
 import agent.puzzle.ia.t1.ufscar.BFSAgent;
+import agent.puzzle.ia.t1.ufscar.DFSAgent;
 
 public class Game {
 
@@ -11,8 +12,8 @@ public class Game {
 
 		Game game = new Game();
 
-		int n = 7;
-		String gameInput = "AAABBABA-ABABBB";
+		int n = 2;
+		String gameInput = "BA-AB";
 
 		// tipos de agente: BL, BP, BPL, BPI, BCU ou A*
 		String agentType = "BL";
@@ -25,17 +26,19 @@ public class Game {
 		
 		// criar o agent escolhido
 		if(agentType == "BL"){
+			System.out.println("*** Busca em largura ***");
 			agent = new BFSAgent(initialState, n);
 		}else if(agentType == "BP"){
-			
+			System.out.println("*** Busca em profundidade ***");
+			agent = new DFSAgent(initialState, n);
 		}else if(agentType == "BPL"){
-
+			System.out.println("*** Busca em profundidade limitada ***");
 		}else if(agentType == "BPI"){
-
+			System.out.println("*** Busca em profundidade iterativa ***");
 		}else if(agentType == "BCU"){
-
+			System.out.println("*** Busca de custo uniforme ***");
 		}else if(agentType == "A*"){
-
+			System.out.println("*** Busca A* ***");
 		}
 
 		// executa o agent
@@ -46,44 +49,19 @@ public class Game {
 			System.out.println("Não tem solução");
 		}else{
 			System.out.println();
-			game.showGoalState(agent.getGoalState());
+			System.out.print("Solução encontrada: ");
+			agent.showGoalState();
+			
+			System.out.println();
 			System.out.println("Nós Gerados: " + agent.getNumberOfGeneratedNodes());
 			System.out.println("Nós Explorados: " + agent.getNumberOfExploredNodes());
-			game.showSolution(solutionPath);
+			System.out.println("Profundidade da Solução: " + agent.getDepthOfSolution());
+			
+			System.out.println();
+			agent.tellSolution();
 		}
-	}
-
-	public void showGoalState(GameState state){
-	
-		System.out.print("Solução encontrada: ");
-		for(Block block : state.getGameConfig()){
-
-			BlockType type = block.getType();
-
-			if(type == BlockType.White){
-			   System.out.print("B");
-			}else if(type == BlockType.Blue){
-				System.out.print("A");
-			}else if(type == BlockType.Empty){
-				System.out.print("-");
-			}
-		}
-		
-		System.out.println();
 	}
 	
-	public void showSolution(List<GameState> solutionPath) {
-		
-		System.out.println("Sequência de ações:");
-		for(GameState state : solutionPath){
-			if(state.getAction() != null)
-				state.getAction().showMovement();
-			else{
-				System.out.println("Estado Inicial");
-			}
-		}
-	}
-
 	public GameState getInitialState(String gameInput, int n){
 		
 		// configuração inicial
@@ -109,7 +87,7 @@ public class Game {
 		}
 
 		// estado inicial;
-		GameState estadoInicial = new GameState(null, gameConfig, null, emptyPos);
+		GameState estadoInicial = new GameState(gameConfig, emptyPos, null, null);
 		
 		return estadoInicial;
 	}

@@ -8,7 +8,7 @@ public class GameState {
 	private String id;
 	private int emptyPosition;
 	
-	public GameState(GameState parent, Block[] gameConfig, Action action, int emptyPosition){
+	public GameState(Block[] gameConfig, int emptyPosition, GameState parent, Action action){
 		this.parent = parent;
 		this.gameConfig = gameConfig;
 		this.action = action;
