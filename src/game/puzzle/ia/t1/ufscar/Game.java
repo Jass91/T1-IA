@@ -7,6 +7,7 @@ import agent.puzzle.ia.t1.ufscar.BFSAgent;
 import agent.puzzle.ia.t1.ufscar.DFSAgent;
 import agent.puzzle.ia.t1.ufscar.IDFSAgent;
 import agent.puzzle.ia.t1.ufscar.LDFSAgent;
+import agent.puzzle.ia.t1.ufscar.UCSAgent;
 
 public class Game {
 
@@ -18,7 +19,7 @@ public class Game {
 		String gameInput = "BA-AB";
 
 		// tipos de agente: BL, BP, BPL, BPI, BCU ou A*
-		String agentType = "BPI";
+		String agentType = "BCU";
 
 		int limit = 10;
 		
@@ -43,6 +44,7 @@ public class Game {
 			agent = new IDFSAgent(initialState, n, limit);
 		}else if(agentType == "BCU"){
 			System.out.println("*** Busca de custo uniforme ***");
+			agent = new UCSAgent(initialState, n);
 		}else if(agentType == "A*"){
 			System.out.println("*** Busca A* ***");
 		}

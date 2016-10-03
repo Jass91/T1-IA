@@ -1,5 +1,7 @@
 package util.puzzle.ia.t1.ufscar;
 
+import java.util.NoSuchElementException;
+
 import game.puzzle.ia.t1.ufscar.GameState;
 
 public class Queue extends Border {
@@ -17,12 +19,12 @@ public class Queue extends Border {
 	@Override
 	public GameState get(){
 		
-		GameState state = null;
-		 
-		if(elements.size() > 0){
-			state = elements.get(0);
-			elements.remove(0);
+		if(elements.size() == 0){
+	       throw new NoSuchElementException();
 		}
+		
+		GameState state = elements.get(0);
+		elements.remove(0);
 
 		return state;
 	}
