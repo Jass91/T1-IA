@@ -21,5 +21,11 @@ public abstract class Border {
 		elements.add(newState);
 	}
 	
+    //Just print out the underlying array list.
+    @Override
+    public String toString() {
+        return elements.toString();
+    }
+    
 	public abstract GameState get();
 }

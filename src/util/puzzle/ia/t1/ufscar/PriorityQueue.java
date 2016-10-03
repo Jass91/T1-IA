@@ -7,7 +7,7 @@ import game.puzzle.ia.t1.ufscar.GameState;
 public class PriorityQueue extends Border {
 
 	public PriorityQueue() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
@@ -40,8 +40,7 @@ public class PriorityQueue extends Border {
 
     //Add a new element to the end and bubble it up to the appropriate
     //position in the heap.
-    @Override
-    public void add(GameState state) {
+    private void addElement(GameState state) {
         elements.add(state);
         bubbleUp(elements.size() - 1);
     }
@@ -109,13 +108,12 @@ public class PriorityQueue extends Border {
         elements.set(i, elements.get(j));
         elements.set(j, tmp);
     }
-
-    //Just print out the underlying array list.
-    @Override
-    public String toString() {
-        return elements.toString();
-    }
 	
+    @Override
+    public void add(GameState newElement){
+    	addElement(newElement);
+    }
+    
 	// remove segundo a política de heap
 	@Override
 	public GameState get() {
