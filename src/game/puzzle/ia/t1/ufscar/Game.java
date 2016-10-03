@@ -56,11 +56,11 @@ public class Game {
 		}else{
 			System.out.println();
 			System.out.println("Tamanho do problema: " + n);
-			System.out.println("Nós Gerados: " + agent.getNumberOfGeneratedNodes());
-			System.out.println("Nós Explorados: " + agent.getNumberOfExploredNodes());
-			System.out.println("Custo da Solução: " + agent.getSolutionCoast());
-			System.out.println("Profundidade da Solução: " + agent.getDepthOfSolution());
-			System.out.print("Solução encontrada: ");
+			System.out.println("Estados Gerados: " + agent.getNumberOfGeneratedNodes());
+			System.out.println("Estados Explorados: " + agent.getNumberOfExploredNodes());
+			System.out.println("Custo da Solucao: " + agent.getSolutionCoast());
+			System.out.println("Profundidade da Solucao: " + agent.getDepthOfSolution());
+			System.out.print("Solucao encontrada: ");
 			agent.showGoalState();
 			
 			System.out.println();

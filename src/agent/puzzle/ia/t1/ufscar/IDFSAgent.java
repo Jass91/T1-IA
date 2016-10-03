@@ -7,36 +7,61 @@ import util.puzzle.ia.t1.ufscar.Stack;
 
 public class IDFSAgent extends GraphAgent{
 
-	private int limit;
+	private int maxLimit;
 	private int depth;
 
-	public IDFSAgent(GameState initialState, int problemSize, int limit) {
+	public IDFSAgent(GameState initialState, int problemSize, int maxLimit) {
 		super(initialState, problemSize);
 
 		this.depth = 1;
-		this.limit = limit;
+		this.maxLimit = maxLimit;
 		this.border = new Stack();
 
 	}
-
-	// sobrescreve o método de resolução
+	
+	// sobrescreve o metodo de resolucao
 	@Override
 	public List<GameState> resolve(){
 
-		while(depth <= limit){
-			List<GameState> resolution = super.resolve();
+		int totalOfExploredNodes = 0;
+		int totalOfGeneratedNodes = 0;
+		
+		// utiliza o agente de busca em profundidade limitada
+		LDFSAgent agent = new LDFSAgent(initialState, problemSize, depth);
+		
+		// aumenta o limite de depth ate maxLimit gradativamente
+		while(depth <= maxLimit){
+			
+			List<GameState> resolution = agent.resolve();
+			
+			// atualiza as variaveis (para cada busca conta os estados gerados e explorados)
+			totalOfExploredNodes += agent.getNumberOfExploredNodes();
+			totalOfGeneratedNodes += agent.getNumberOfGeneratedNodes();
+			
 			if(resolution != null){
+				
+				this.goalState = agent.getGoalState();
+				this.numberOfExploredNodes = totalOfExploredNodes;
+				this.numberOfGeneratedNodes = totalOfGeneratedNodes;
+				
 				return resolution;
-			}else{
-				depth++;
 			}
+			
+			// muda a profundidade limite
+			agent.setLimit(++depth);
 		}
+		
+		// monta as informacoes 
+		this.goalState = agent.getGoalState();
+		this.numberOfExploredNodes = totalOfExploredNodes;
+		this.numberOfGeneratedNodes = totalOfGeneratedNodes;
+		
 		return null;
 	}
 
-	// Sobrescreve a função que expande o nó.
+	// Sobrescreve a funcao que expande o estado.
 	// De acordo com o comportamento geral desse tipo de agente,
-	// o nó é expandido apenas se n.depth < limit
+	// o estado sera expandido apenas se n.depth < limit
 	@Override
 	public void expandNode(GameState node){
 		if(node.getDepth() < depth){

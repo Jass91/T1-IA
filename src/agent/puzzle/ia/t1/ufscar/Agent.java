@@ -19,7 +19,7 @@ public abstract class Agent {
 	protected Border border;
 	protected GameState initialState;
 	protected GameState goalState;
-	
+
 	public Agent(GameState initialState, int problemSize){
 		this.initialState = initialState;
 		this.problemSize = problemSize;
@@ -29,8 +29,8 @@ public abstract class Agent {
 		depth = 0;
 	}
 
-	// executa a ação (troca src com dst), resultando em um novo estado
-	public GameState move(GameState state, int src, int dst) {
+	// executa a acao (troca src com dst), resultando em um novo estado
+	protected GameState move(GameState state, int src, int dst) {
 
 		Block[] newGameConfig = new Block[2 * problemSize + 1];
 		Block[] currentGameConfig = state.getGameConfig();
@@ -41,7 +41,7 @@ public abstract class Agent {
 
 		// custo do movimento
 		int coast = Math.abs(src - dst);
-				
+
 		// cria a ação necessária para esse novo estado
 		Action action = new Action(coast, src, dst);
 
@@ -55,6 +55,47 @@ public abstract class Agent {
 		return newState;
 
 	}
+
+	// verifica se o estado eh meta
+	protected boolean isGoal(GameState state){
+
+		Block[] gameConfig = state.getGameConfig();
+		int n = (2 * problemSize) + 1;
+
+		for(int i = 1; i < n; i++){
+
+			// se não é objetivo
+			if( (gameConfig[i - 1].getType() == BlockType.Blue) &&
+					(gameConfig[i].getType() == BlockType.White)){
+
+				return false;
+
+				// outro caso que não é objetivo
+			}else if((i >= 2)){
+
+				if( (gameConfig[i - 1].getType() == BlockType.Empty) &&
+						(gameConfig[i - 2].getType() == BlockType.Blue) &&
+						(gameConfig[i].getType() == BlockType.White)){
+
+					return false;
+				}
+
+			}
+		}
+
+		return true;
+	}
+
+	protected void addStateToBorder(GameState newState) {
+		this.border.add(newState);
+	}
+
+	protected GameState getStateFromBorder() {
+		return this.border.get();
+	}
+
+	// executa a estrat�gia de expans�o do estado
+	protected abstract void expandNode(GameState node);
 
 	// retorna o caminho encontrado (lista de estados)
 	public List<GameState> resolve(){
@@ -75,7 +116,7 @@ public abstract class Agent {
 
 				// incrementa o numero de nós explorados
 				numberOfExploredNodes++;
-				
+
 				// retorna a solução
 				return getSolutionPath();
 
@@ -92,7 +133,7 @@ public abstract class Agent {
 		return getSolutionPath();
 	}
 
-	// retorna o caminho do estado meta até o estado inicial
+	// retorna o caminho do estado meta ate o estado inicial
 	private List<GameState> getSolutionPath(){
 
 		if(goalState == null)
@@ -112,35 +153,12 @@ public abstract class Agent {
 		return solutionPath;
 	}
 
-	// verifica se o estado é meta
-	public boolean isGoal(GameState state){
 
-		Block[] gameConfig = state.getGameConfig();
-		int n = (2 * problemSize) + 1;
-
-		for(int i = 1; i < n; i++){
-
-			// se não é objetivo
-			if( (gameConfig[i - 1].getType() == BlockType.Blue) &&
-					(gameConfig[i].getType() == BlockType.White)){
-
-				return false;
-
-			// outro caso que não é objetivo
-			}else if((i >= 2)){
-
-				if( (gameConfig[i - 1].getType() == BlockType.Empty) &&
-						(gameConfig[i - 2].getType() == BlockType.Blue) &&
-						(gameConfig[i].getType() == BlockType.White)){
-
-					return false;
-				}
-
-			}
-		}
-
-		return true;
-	}
+	// **************************************** //
+	//											//
+	// Acess�veis atrav�s da instancia de Agent //
+	//											//
+	// **************************************** //
 
 	public int getNumberOfExploredNodes(){
 		return numberOfExploredNodes;
@@ -150,7 +168,7 @@ public abstract class Agent {
 		return numberOfGeneratedNodes;
 	}
 
-	// retorna a profundidade do nó meta
+	// retorna a profundidade do estado meta
 	public int getDepthOfSolution(){
 		return goalState.getDepth();
 	}
@@ -159,25 +177,17 @@ public abstract class Agent {
 		return goalState;
 	}
 
-	public void addStateToBorder(GameState newState) {
-		this.border.add(newState);
-	}
-
-	public GameState getStateFromBorder() {
-		return this.border.get();
-	}
-	
 	public int getSolutionCoast(){
 		return goalState.getCoastToGetHere();
 	}
-	
+
 	// exibe o estado meta
 	public void showGoalState(){
-		
+
 		for(Block block : goalState.getGameConfig()){
 			BlockType type = block.getType();
 			if(type == BlockType.White){
-			   System.out.print("B");
+				System.out.print("B");
 			}else if(type == BlockType.Blue){
 				System.out.print("A");
 			}else if(type == BlockType.Empty){
@@ -185,10 +195,10 @@ public abstract class Agent {
 			}
 		}
 	}
-	
-	// informa as ações para alcançar o estado meta
+
+	// informa as acoes para alcancar o estado meta
 	public void tellSolution() {
-		
+
 		for(GameState state : getSolutionPath()){
 			if(state.getAction() == null)
 				System.out.println("Estado Inicial");
@@ -196,9 +206,7 @@ public abstract class Agent {
 				state.getAction().showMovement();
 			}
 		}
-		
+
 	}
-	
-	public abstract void expandNode(GameState node);
 
 }

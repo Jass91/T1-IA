@@ -16,9 +16,18 @@ public class LDFSAgent extends TreeAgent {
 		
 	}
 
-	// sobrescreve a função que expande o nó.
-	//De acordo com o comportamento geral desse tipo de agente,
-	// o nó é expandido apenas se n.depth < limit
+	public void setLimit(int limit){
+		this.limit = limit;
+	}
+	
+	
+	public int getLimit(){
+		return limit;
+	}
+	
+	// Sobrescreve a funcao que expande o estado.
+	// De acordo com o comportamento geral desse tipo de agente,
+	// O estado sera expandido apenas se n.depth < limit
 	@Override
 	public void expandNode(GameState node){
 		if(node.getDepth() < limit){
