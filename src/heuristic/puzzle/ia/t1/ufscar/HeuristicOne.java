@@ -78,18 +78,18 @@ public class HeuristicOne extends Heuristic<String, Integer> {
 
 
 	@Override
-	public Integer getValueTo(SearchNode state) {
+	public Integer getValueTo(SearchNode node) {
 
 		// se já temos computado esse valor, apenas retornamos
-		Integer val = values.get(state.getId());
+		Integer val = values.get(node.getId());
 		if(val != null)
 			return val;
 
 		// senao, calculamos
-		val = calculateHeuristicTo(state);
+		val = calculateHeuristicTo(node);
 
 		// armazenamos
-		values.put(state.getId(), val);
+		values.put(node.getId(), val);
 
 		// e retornamos o valor para esse estado
 		return val;
