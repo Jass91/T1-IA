@@ -3,12 +3,12 @@ package game.puzzle.ia.t1.ufscar;
 public class Action {
 
 	private int coast;
-	private int srcBlock;
-	private int destBlock;
+	private int srcPos;
+	private int dstPos;
 	
 	public Action(int coast, int srcBlock, int destBlock){
-		this.srcBlock = srcBlock;
-		this.destBlock = destBlock;
+		this.srcPos = srcBlock;
+		this.dstPos = destBlock;
 		this.coast = coast;
 	}
 
@@ -20,23 +20,23 @@ public class Action {
 		this.coast = coast;
 	}
 
-	public int getSrcBlock() {
-		return srcBlock;
+	public int getSoucePosition() {
+		return srcPos;
 	}
 
-	public void setSrcBlock(int srcBlock) {
-		this.srcBlock = srcBlock;
+	public void setSoucePosition(int srcPos) {
+		this.srcPos = srcPos;
 	}
 
-	public int getDestBlock() {
-		return destBlock;
+	public int getDestinationPosition() {
+		return dstPos;
 	}
 
-	public void setDestBlock(int destBlock) {
-		this.destBlock = destBlock;
+	public void setDestinationPosition(int dstPos) {
+		this.dstPos = dstPos;
 	}
 	
 	public void showMovement(){
-		System.out.println("Mova o bloco em R[" + srcBlock + "] para R[" + destBlock + "] (custo = " + coast + ")");
+		System.out.println("Mova o bloco em R[" + srcPos + "] para R[" + dstPos + "] (custo = " + coast + ")");
 	}
 }

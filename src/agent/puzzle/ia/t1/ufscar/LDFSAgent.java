@@ -1,7 +1,8 @@
 package agent.puzzle.ia.t1.ufscar;
 
+import border.agent.puzzle.ia.t1.ufscar.StackBorder;
 import game.puzzle.ia.t1.ufscar.GameState;
-import util.puzzle.ia.t1.ufscar.Stack;
+import general.agent.puzzle.ia.t1.ufscar.TreeAgent;
 
 // agente que executa uma busca em profundidade limitada
 public class LDFSAgent extends TreeAgent {
@@ -12,7 +13,7 @@ public class LDFSAgent extends TreeAgent {
 		super(initialState, problemSize);
 		
 		this.limit = limit;
-		this.border = new Stack();
+		this.border = new StackBorder();
 		
 	}
 

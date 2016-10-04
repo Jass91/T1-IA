@@ -1,4 +1,4 @@
-package agent.puzzle.ia.t1.ufscar;
+package general.agent.puzzle.ia.t1.ufscar;
 
 import game.puzzle.ia.t1.ufscar.GameState;
 

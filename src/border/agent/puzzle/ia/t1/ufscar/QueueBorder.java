@@ -1,12 +1,17 @@
-package util.puzzle.ia.t1.ufscar;
+package border.agent.puzzle.ia.t1.ufscar;
 
 import java.util.NoSuchElementException;
 
 import game.puzzle.ia.t1.ufscar.GameState;
 
-public class Queue extends Border {
+/*
+ * Representa a borda em forma de uma fila,
+ * resultando em uma busca em largura.
+ * 
+ */
+public class QueueBorder extends Border {
 
-	public Queue() {
+	public QueueBorder() {
 		// TODO Auto-generated constructor stub
 	}
 

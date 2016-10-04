@@ -1,7 +1,8 @@
 package agent.puzzle.ia.t1.ufscar;
 
+import border.agent.puzzle.ia.t1.ufscar.QueueBorder;
 import game.puzzle.ia.t1.ufscar.GameState;
-import util.puzzle.ia.t1.ufscar.Queue;
+import general.agent.puzzle.ia.t1.ufscar.GraphAgent;
 
 // agente que executa a busca em largura
 public class BFSAgent extends GraphAgent {
@@ -10,7 +11,7 @@ public class BFSAgent extends GraphAgent {
 		super(initialState, problemSize);
 
 		// inicializa a borda como uma fila
-		this.border = new Queue();
+		this.border = new QueueBorder();
 	}
 
 }

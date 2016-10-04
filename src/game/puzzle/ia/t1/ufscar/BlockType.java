@@ -13,4 +13,13 @@ public enum BlockType {
 		return valor;
 	}
 
+	public char getValueAsChar(){
+		
+		if(valor == 1)
+			return 'B';
+		else if(valor == 2)
+			return 'A';
+		else
+			return '-';
+	}
 }

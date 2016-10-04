@@ -1,4 +1,4 @@
-package util.puzzle.ia.t1.ufscar;
+package border.agent.puzzle.ia.t1.ufscar;
 
 import java.util.ArrayList;
 import java.util.List;

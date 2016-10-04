@@ -2,9 +2,11 @@ package agent.puzzle.ia.t1.ufscar;
 
 import java.util.List;
 
+import border.agent.puzzle.ia.t1.ufscar.StackBorder;
 import game.puzzle.ia.t1.ufscar.GameState;
-import util.puzzle.ia.t1.ufscar.Stack;
+import general.agent.puzzle.ia.t1.ufscar.GraphAgent;
 
+//agente que executa uma busca em profundidade iterativa
 public class IDFSAgent extends GraphAgent{
 
 	private int maxLimit;
@@ -15,7 +17,7 @@ public class IDFSAgent extends GraphAgent{
 
 		this.depth = 1;
 		this.maxLimit = maxLimit;
-		this.border = new Stack();
+		this.border = new StackBorder();
 
 	}
 	

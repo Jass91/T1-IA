@@ -9,52 +9,52 @@ public class GameState {
 	private int emptyPosition;
 	private int depth;
 	private int coast;
-	
+
 	public GameState(Block[] gameConfig, int emptyPosition, GameState parent, Action action){
 		this.parent = parent;
 		this.gameConfig = gameConfig;
 		this.action = action;
 		this.emptyPosition = emptyPosition;
-		
-		setDepth();
-		setId();
-		setCoastToGetHere();
+		this.depth = setDepth();
+		this.id = generateId();
+		this.coast = getCoastToGetHere();
 	}
 
-	private void setCoastToGetHere() {
+	private int getCoastToGetHere() {
 		if(parent == null)
-			this.coast = 0;
+			return 0;
 		else{
-			this.coast = parent.getCoastToGetHere() + action.getCoast();
+			return (parent.getCoast() + action.getCoast());
 		}
-		
+
 	}
 
-	public int getCoastToGetHere() {
+	public int getCoast() {
 		return coast;
 	}
 
-	private void setDepth(){
+	private int setDepth(){
 		if(parent == null)
-			this.depth = 0;
+			return 0;
 		else
-			this.depth = parent.getDepth() + 1;
+			return parent.getDepth() + 1;
 	}
-	
+
 	public int getDepth() {
 		return depth;
 	}
 
-	private void setId(){
+	private String generateId(){
+		
 		String id = "";
 		for(Block block : gameConfig){
-			int type = block.getType().getValue(); 
+			char type = block.getType().getValueAsChar(); 
 			id += type;
 		}
 		
-		this.id = id;
+		return id;
 	}
-	
+
 	public GameState getParent() {
 		return parent;
 	}
@@ -86,9 +86,13 @@ public class GameState {
 	public void setEmptyPosition(int emptyPosition) {
 		this.emptyPosition = emptyPosition;
 	}
-	
+
 	public String getId(){
-		return id;
+		return new String(id);
 	}
 
+	@Override
+	public String toString(){
+		return id;
+	}
 }

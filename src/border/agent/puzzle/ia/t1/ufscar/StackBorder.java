@@ -1,12 +1,17 @@
-package util.puzzle.ia.t1.ufscar;
+package border.agent.puzzle.ia.t1.ufscar;
 
 import java.util.NoSuchElementException;
 
 import game.puzzle.ia.t1.ufscar.GameState;
 
-public class Stack extends Border {
+/*
+ * Representa a borda em forma de uma pilha,
+ * resultando em uma busca em profundidade.
+ * 
+ */
+public class StackBorder extends Border {
 
-	public Stack() {
+	public StackBorder() {
 		// TODO Auto-generated constructor stub
 	}
 

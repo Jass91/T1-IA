@@ -19,6 +19,10 @@ public class Block {
 		return this.type;
 	}
 	
+	public char getTypeAsChar(){
+		return this.type.getValueAsChar();
+	}
+	
 	public int getId(){
 		return this.id;
 	}

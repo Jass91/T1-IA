@@ -1,13 +1,14 @@
-package agent.puzzle.ia.t1.ufscar;
+package general.agent.puzzle.ia.t1.ufscar;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import border.agent.puzzle.ia.t1.ufscar.Border;
 import game.puzzle.ia.t1.ufscar.Action;
 import game.puzzle.ia.t1.ufscar.Block;
 import game.puzzle.ia.t1.ufscar.BlockType;
 import game.puzzle.ia.t1.ufscar.GameState;
-import util.puzzle.ia.t1.ufscar.Border;
 
 // define o comportamento comum a todos os agentes
 public abstract class Agent {
@@ -32,7 +33,7 @@ public abstract class Agent {
 	// executa a acao (troca src com dst), resultando em um novo estado
 	protected GameState move(GameState state, int src, int dst) {
 
-		Block[] newGameConfig = new Block[2 * problemSize + 1];
+		Block[] newGameConfig = new Block[(problemSize << 1) + 1];
 		Block[] currentGameConfig = state.getGameConfig();
 
 		// copia os valores
@@ -97,6 +98,13 @@ public abstract class Agent {
 	// executa a estratégia de expansão do estado
 	protected abstract void expandNode(GameState node);
 
+	public int getAverageBranchingFactor(){
+		
+		if(numberOfExploredNodes == 0)
+			return 0;
+		
+		return (numberOfGeneratedNodes / numberOfExploredNodes);
+	}
 	// retorna o caminho encontrado (lista de estados)
 	public List<GameState> resolve(){
 
@@ -178,7 +186,7 @@ public abstract class Agent {
 	}
 
 	public int getSolutionCoast(){
-		return goalState.getCoastToGetHere();
+		return goalState.getCoast();
 	}
 
 	// exibe o estado meta
@@ -200,10 +208,12 @@ public abstract class Agent {
 	public void tellSolution() {
 
 		for(GameState state : getSolutionPath()){
-			if(state.getAction() == null)
-				System.out.println("Estado Inicial");
-			else{
+			if(state.getAction() == null){
+				System.out.println("Estado Inicial:");
+				System.out.println(state.toString());
+			}else{
 				state.getAction().showMovement();
+				System.out.println(state.toString());
 			}
 		}
 

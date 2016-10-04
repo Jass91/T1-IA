@@ -1,13 +1,26 @@
-package util.puzzle.ia.t1.ufscar;
+package border.agent.puzzle.ia.t1.ufscar;
 
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 import game.puzzle.ia.t1.ufscar.GameState;
 
-public class PriorityQueue extends Border {
+/*
+ * Representa a borda em forma de fila de prioridade (heap),
+ * no qual a ordem dos elementos é dado pelo comparador
+ * passado no contrutor desse objeto.
+ * 
+ * Essa ordem, resulta em uma busca de custo uniforme ou
+ * caso a ordem dos elementos seja decidida por uma funcao heuristica,
+ * teremos uma busca guiada de melhor escolha
+ * 
+ */
+public class PriorityQueueBorder extends Border {
 
-	public PriorityQueue() {
-		
+	private Comparator<GameState> comparator;
+	
+	public PriorityQueueBorder(Comparator<GameState> comparator) {
+		this.comparator = comparator;
 	}
 
 
@@ -35,7 +48,8 @@ public class PriorityQueue extends Border {
         if (right(n) > elements.size() - 1)
         	return left(n);
         
-        return elements.get(left(n)).getCoastToGetHere() <= elements.get(right(n)).getCoastToGetHere() ? left(n) : right(n);
+        return comparator.compare(elements.get(left(n)), elements.get(right(n))) <= 0 ? left(n) : right(n);
+        
     }
 
     //Add a new element to the end and bubble it up to the appropriate
@@ -72,7 +86,7 @@ public class PriorityQueue extends Border {
     //until it is at the root.
     private void bubbleUp(int n) {
         int parIndex = par(n);
-        while (n > 0 && elements.get(parIndex).getCoastToGetHere() > elements.get(n).getCoastToGetHere()) {
+        while (n > 0 && (comparator.compare(elements.get(parIndex), elements.get(n)) > 0)) {
             swap(parIndex, n);
             n = parIndex;
             parIndex = par(n);
@@ -83,7 +97,7 @@ public class PriorityQueue extends Border {
     //until it is lower than both of its children.
     private void bubbleDown(int n) {
         int minChildIndex = minChildIndex(n);
-        while (minChildIndex != -1 && elements.get(minChildIndex).getCoastToGetHere() < elements.get(n).getCoastToGetHere()) {
+        while (minChildIndex != -1 && (comparator.compare(elements.get(minChildIndex), elements.get(n)) < 0)) {
             swap(minChildIndex, n);
             n = minChildIndex;
             minChildIndex = minChildIndex(n);
@@ -94,7 +108,7 @@ public class PriorityQueue extends Border {
     public boolean isHeap() {
         for (int i = 1; i < elements.size(); ++i) {
             if (par(i) >= 0) {
-                if (elements.get(par(i)).getCoastToGetHere() > elements.get(i).getCoastToGetHere()) {
+                if (comparator.compare(elements.get(par(i)), elements.get(i)) > 0){
                     return false;
                 }
             }
@@ -109,6 +123,7 @@ public class PriorityQueue extends Border {
         elements.set(j, tmp);
     }
 	
+    // adiciona segundo a politica de heap
     @Override
     public void add(GameState newElement){
     	addElement(newElement);
@@ -117,7 +132,6 @@ public class PriorityQueue extends Border {
 	// remove segundo a política de heap
 	@Override
 	public GameState get() {
-		
 		if(elements.size() == 0){
 	       throw new NoSuchElementException();
 		}
