@@ -6,8 +6,8 @@ public class Block {
 	private BlockType type;
 	private int id;
 	
-	public Block(BlockType color, int id){
-		this.type = color;
+	public Block(BlockType type, int id){
+		this.type = type;
 		this.id = id;
 	}
 	
