@@ -8,7 +8,7 @@ import agent.puzzle.ia.t1.ufscar.DFSAgent;
 import agent.puzzle.ia.t1.ufscar.GBFSAgent;
 import agent.puzzle.ia.t1.ufscar.IDFSAgent;
 import agent.puzzle.ia.t1.ufscar.LDFSAgent;
-import agent.puzzle.ia.t1.ufscar.UCSAgent;
+import agent.puzzle.ia.t1.ufscar.UCFSAgent;
 import general.agent.puzzle.ia.t1.ufscar.Agent;
 import heuristic.puzzle.ia.t1.ufscar.HeuristicOne;
 import heuristic.puzzle.ia.t1.ufscar.HeuristicTwo;
@@ -72,7 +72,7 @@ public class Game {
 
 		}else if(gameInput.getAgentType().equals("BCU")){
 			System.out.println("*** Busca de custo uniforme ***");
-			agent = new UCSAgent(initialState, gameInput.getProblemSize());
+			agent = new UCFSAgent(initialState, gameInput.getProblemSize());
 
 		}else if(gameInput.getAgentType().equals("BPL")){
 			System.out.println("*** Busca em profundidade limitada ***");

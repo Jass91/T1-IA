@@ -6,9 +6,9 @@ import border.agent.puzzle.ia.t1.ufscar.PriorityQueueBorder;
 import game.puzzle.ia.t1.ufscar.GameState;
 import general.agent.puzzle.ia.t1.ufscar.GraphAgent;
 
-public class UCSAgent extends GraphAgent implements Comparator<GameState> {
+public class UCFSAgent extends GraphAgent implements Comparator<GameState> {
 
-	public UCSAgent(GameState initialState, int problemSize) {
+	public UCFSAgent(GameState initialState, int problemSize) {
 		super(initialState, problemSize);
 		
 		// instancia a borda como uma fila de prioridade

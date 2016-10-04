@@ -11,7 +11,7 @@ public class GameInput {
 	private int maxLimit;
 	
 	public GameInput() {
-		// TODO Auto-generated constructor stub
+		maxLimit = 1;
 	}
 
 	public int getMaxLimit() {
@@ -66,8 +66,8 @@ public class GameInput {
 		//System.out.print("Tipo de busca (BL, BP, BPL, BPI, BCU, A*): ");
 		agentType = scanner.next();
 		
-		if(agentType == "BPL" || agentType == "BPI"){
-			System.out.print("Limite maximo: ");
+		if(agentType.equals("BPL") || agentType.equals("BPI")){
+			//System.out.print("Limite maximo: ");
 			maxLimit = scanner.nextInt();
 		}
 		scanner.close();
