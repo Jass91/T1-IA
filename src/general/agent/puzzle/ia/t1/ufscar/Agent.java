@@ -95,16 +95,36 @@ public abstract class Agent {
 		return this.border.get();
 	}
 
-	// executa a estratégia de expansão do estado
+	// executa a estratégia de expansão do estado (definida na subclasse)
 	protected abstract void expandNode(GameState node);
+	
+	// calcula o caminho do estado meta ate o estado inicial
+	private List<GameState> getSolutionPath(){
 
-	public int getAverageBranchingFactor(){
-		
-		if(numberOfExploredNodes == 0)
-			return 0;
-		
-		return (numberOfGeneratedNodes / numberOfExploredNodes);
+		if(goalState == null)
+			return null;
+
+		List<GameState> solutionPath = new ArrayList<GameState>();
+		GameState state = goalState;
+
+		while(state != null){
+			solutionPath.add(state);
+			state = state.getParent();
+		}
+
+		// inverte a lista
+		Collections.reverse(solutionPath);
+
+		return solutionPath;
 	}
+
+
+	// **************************************** //
+	//											//
+	// Acessíveis através da instancia de Agent //
+	//											//
+	// **************************************** //
+
 	// retorna o caminho encontrado (lista de estados)
 	public List<GameState> resolve(){
 
@@ -140,34 +160,15 @@ public abstract class Agent {
 
 		return getSolutionPath();
 	}
-
-	// retorna o caminho do estado meta ate o estado inicial
-	private List<GameState> getSolutionPath(){
-
-		if(goalState == null)
-			return null;
-
-		List<GameState> solutionPath = new ArrayList<GameState>();
-		GameState state = goalState;
-
-		while(state != null){
-			solutionPath.add(state);
-			state = state.getParent();
-		}
-
-		// inverte a lista
-		Collections.reverse(solutionPath);
-
-		return solutionPath;
+	
+	public int getAverageBranchingFactor(){
+		
+		if(numberOfExploredNodes == 0)
+			return 0;
+		
+		return (numberOfGeneratedNodes / numberOfExploredNodes);
 	}
-
-
-	// **************************************** //
-	//											//
-	// Acessíveis através da instancia de Agent //
-	//											//
-	// **************************************** //
-
+	
 	public int getNumberOfExploredNodes(){
 		return numberOfExploredNodes;
 	}
@@ -187,21 +188,6 @@ public abstract class Agent {
 
 	public int getSolutionCoast(){
 		return goalState.getCoast();
-	}
-
-	// exibe o estado meta
-	public void showGoalState(){
-
-		for(Block block : goalState.getGameConfig()){
-			BlockType type = block.getType();
-			if(type == BlockType.White){
-				System.out.print("B");
-			}else if(type == BlockType.Blue){
-				System.out.print("A");
-			}else if(type == BlockType.Empty){
-				System.out.print("-");
-			}
-		}
 	}
 
 	// informa as acoes para alcancar o estado meta

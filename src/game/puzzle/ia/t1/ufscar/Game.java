@@ -20,7 +20,25 @@ public class Game {
 
 	}
 
+	public static void main(String[] args) {
+
+		try {
+
+			Game game = new Game();
+
+			// le os dados de entrada
+			GameInput gameInput = game.readInput();
+
+			// resolve e mostra a solucao
+			game.resolve(gameInput);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 	public GameInput readInput(){
+		
 		GameInput gameInput = new GameInput();
 		try {
 			gameInput.Read();
@@ -67,7 +85,7 @@ public class Game {
 		}else if(gameInput.getAgentType().equals("A*")){
 			System.out.println("*** Busca A* ***");
 
-		// executa o agente de busca guiada com a heuristica 1
+			// executa o agente de busca guiada com a heuristica 1
 		}else if(gameInput.getAgentType().equals("GBFS1")){
 			System.out.println("*** Busca de melhor escolha com H1 ***");
 			agent = new GBFSAgent(initialState, gameInput.getProblemSize(), new HeuristicOne());
@@ -99,11 +117,26 @@ public class Game {
 			System.out.println("Nao encontrou solucao");
 		}else{
 			System.out.print("Solucao encontrada: ");
-			agent.showGoalState();
+			showGoalState(agent.getGoalState());
 
 			System.out.println();
 			System.out.println();
 			agent.tellSolution();
+		}
+	}
+
+	// exibe o estado meta
+	private void showGoalState(GameState goalState){
+
+		for(Block block : goalState.getGameConfig()){
+			BlockType type = block.getType();
+			if(type == BlockType.White){
+				System.out.print("B");
+			}else if(type == BlockType.Blue){
+				System.out.print("A");
+			}else if(type == BlockType.Empty){
+				System.out.print("-");
+			}
 		}
 	}
 
@@ -133,24 +166,6 @@ public class Game {
 		// estado inicial;
 		return new GameState(gameConfig, emptyPos, null, null);
 
-	}
-
-	public static void main(String[] args) {
-
-
-		try {
-
-			Game game = new Game();
-
-			// le os dados de entrada
-			GameInput gameInput = game.readInput();
-
-			// resolve e mostra a solucao
-			game.resolve(gameInput);
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
 
 }
