@@ -34,6 +34,9 @@ public class IDFSAgent extends TreeAgent{
 		// aumenta o limite de depth ate maxLimit gradativamente
 		while(depth <= maxLimit){
 			
+			numberOfExploredNodes = 0;
+			numberOfGeneratedNodes = 0;
+			
 			List<GameState> resolution = super.resolve();
 			
 			// atualiza as variaveis (para cada busca conta os estados gerados e explorados)
