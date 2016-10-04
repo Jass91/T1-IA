@@ -1,21 +1,21 @@
 package general.agent.puzzle.ia.t1.ufscar;
 
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 public class TreeAgent extends Agent {
 
-	public TreeAgent(GameState initialState, int problemSize) {
-		super(initialState, problemSize);
+	public TreeAgent(SearchNode initialNode, int problemSize) {
+		super(initialNode, problemSize);
 	}
 
 	@Override
-	public void expandNode(GameState node) {
+	public void expandNode(SearchNode node) {
 		expandNodeAsTree(node);
 
 	}
 	
-	// executa a ação de expandir o nó, porém NÃO desconsidera nós já gerados
-	private void expandNodeAsTree(GameState state) {
+	// executa a acao de expandir o no, porem NAO desconsidera nos ja gerados
+	private void expandNodeAsTree(SearchNode state) {
 
 		int emptyPos = state.getEmptyPosition();
 		int n = (2 * problemSize) + 1;
@@ -29,17 +29,17 @@ public class TreeAgent extends Agent {
 			// custo do movimento
 			int distance = Math.abs(i - emptyPos);
 
-			// se o movimento é legal
+			// se o movimento eh legal
 			if(distance <= problemSize){
 
-				// retorna um novo estado movendo-se de i para emptyPos a partir do estado atual
-				GameState newState = move(state, i, emptyPos);
+				// retorna um novo no movendo-se de i para emptyPos a partir do no atual
+				SearchNode newNode = move(state, i, emptyPos);
 
-				// incrementa o numero de nós gerados
+				// incrementa o numero de nos gerados
 				numberOfGeneratedNodes++;
 
-				// insere o novo estado na borda
-				border.add(newState);
+				// insere o novo no na borda
+				border.add(newNode);
 			}
 		}
 

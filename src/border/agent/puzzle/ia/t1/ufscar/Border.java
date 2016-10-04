@@ -3,21 +3,21 @@ package border.agent.puzzle.ia.t1.ufscar;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 public abstract class Border {
 
-	protected List<GameState> elements;
+	protected List<SearchNode> elements;
 	
 	public Border() {
-		elements = new ArrayList<GameState>();
+		elements = new ArrayList<SearchNode>();
 	}
 
 	public int getSize(){
 		return elements.size();
 	}
 	
-	public void add(GameState newState) {
+	public void add(SearchNode newState) {
 		elements.add(newState);
 	}
 	
@@ -27,5 +27,5 @@ public abstract class Border {
         return elements.toString();
     }
     
-	public abstract GameState get();
+	public abstract SearchNode get();
 }

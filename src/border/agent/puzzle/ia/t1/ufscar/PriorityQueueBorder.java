@@ -3,7 +3,7 @@ package border.agent.puzzle.ia.t1.ufscar;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 /*
  * Representa a borda em forma de fila de prioridade (heap),
@@ -17,9 +17,9 @@ import game.puzzle.ia.t1.ufscar.GameState;
  */
 public class PriorityQueueBorder extends Border {
 
-	private Comparator<GameState> comparator;
+	private Comparator<SearchNode> comparator;
 	
-	public PriorityQueueBorder(Comparator<GameState> comparator) {
+	public PriorityQueueBorder(Comparator<SearchNode> comparator) {
 		this.comparator = comparator;
 	}
 
@@ -54,14 +54,14 @@ public class PriorityQueueBorder extends Border {
 
     //Add a new element to the end and bubble it up to the appropriate
     //position in the heap.
-    private void addElement(GameState state) {
+    private void addElement(SearchNode state) {
         elements.add(state);
         bubbleUp(elements.size() - 1);
     }
 
     //Remove the element at the root, move the last element up, and
     //bubble it down to the appropriate position.
-    private GameState remove() {
+    private SearchNode remove() {
 
         if (elements.size() == 0)
         	throw new NoSuchElementException();
@@ -70,7 +70,7 @@ public class PriorityQueueBorder extends Border {
             System.err.println("Heap property broken!");
         }
 
-        GameState result = elements.get(0);
+        SearchNode result = elements.get(0);
         elements.set(0, elements.get(elements.size() - 1));
         elements.remove(elements.size() - 1);
         bubbleDown(0);
@@ -118,20 +118,20 @@ public class PriorityQueueBorder extends Border {
 
     //Utility function to swap two elements in the array list.
     private void swap(int i, int j) {
-        GameState tmp = elements.get(i);
+        SearchNode tmp = elements.get(i);
         elements.set(i, elements.get(j));
         elements.set(j, tmp);
     }
 	
     // adiciona segundo a politica de heap
     @Override
-    public void add(GameState newElement){
+    public void add(SearchNode newElement){
     	addElement(newElement);
     }
     
 	// remove segundo a política de heap
 	@Override
-	public GameState get() {
+	public SearchNode get() {
 		if(elements.size() == 0){
 	       throw new NoSuchElementException();
 		}

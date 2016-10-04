@@ -1,18 +1,18 @@
 package game.puzzle.ia.t1.ufscar;
 
-public class GameState {
+public class SearchNode {
 
-	private GameState parent;
-	private Block[] gameConfig;
+	private SearchNode parent;
+	private Block[] gameState;
 	private Action action;
 	private String id;
 	private int emptyPosition;
 	private int depth;
 	private int coast;
 
-	public GameState(Block[] gameConfig, int emptyPosition, GameState parent, Action action){
+	public SearchNode(Block[] gameConfig, int emptyPosition, SearchNode parent, Action action){
 		this.parent = parent;
-		this.gameConfig = gameConfig;
+		this.gameState = gameConfig;
 		this.action = action;
 		this.emptyPosition = emptyPosition;
 		this.depth = setDepth();
@@ -47,7 +47,7 @@ public class GameState {
 	private String generateId(){
 		
 		String id = "";
-		for(Block block : gameConfig){
+		for(Block block : gameState){
 			char type = block.getType().getValueAsChar(); 
 			id += type;
 		}
@@ -55,20 +55,20 @@ public class GameState {
 		return id;
 	}
 
-	public GameState getParent() {
+	public SearchNode getParent() {
 		return parent;
 	}
 
-	public void setParent(GameState parent) {
+	public void setParent(SearchNode parent) {
 		this.parent = parent;
 	}
 
-	public Block[] getGameConfig() {
-		return gameConfig;
+	public Block[] getGameState() {
+		return gameState;
 	}
 
 	public void setGameConfig(Block[] gameConfig) {
-		this.gameConfig = gameConfig;
+		this.gameState = gameConfig;
 	}
 
 	public Action getAction() {

@@ -1,7 +1,7 @@
 package agent.puzzle.ia.t1.ufscar;
 
 import border.agent.puzzle.ia.t1.ufscar.StackBorder;
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 import general.agent.puzzle.ia.t1.ufscar.TreeAgent;
 
 // agente que executa uma busca em profundidade limitada
@@ -9,7 +9,7 @@ public class LDFSAgent extends TreeAgent {
 
 	private int limit;
 	
-	public LDFSAgent(GameState initialState, int problemSize, int limit) {
+	public LDFSAgent(SearchNode initialState, int problemSize, int limit) {
 		super(initialState, problemSize);
 		
 		this.limit = limit;
@@ -30,7 +30,7 @@ public class LDFSAgent extends TreeAgent {
 	// De acordo com o comportamento geral desse tipo de agente,
 	// O estado sera expandido apenas se n.depth < limit
 	@Override
-	public void expandNode(GameState node){
+	public void expandNode(SearchNode node){
 		if(node.getDepth() < limit){
 			super.expandNode(node);
 		}

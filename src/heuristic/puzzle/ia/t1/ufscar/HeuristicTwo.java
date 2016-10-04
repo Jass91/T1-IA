@@ -1,6 +1,6 @@
 package heuristic.puzzle.ia.t1.ufscar;
 
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 /*
  * H2:
@@ -24,7 +24,7 @@ public class HeuristicTwo extends Heuristic<String, Integer> {
 	}
 	
 	@Override
-	public Integer getValueTo(GameState state) {
+	public Integer getValueTo(SearchNode state) {
 		
 		return null;
 	}

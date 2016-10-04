@@ -1,6 +1,6 @@
 package heuristic.puzzle.ia.t1.ufscar;
 
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 /*
  * H0 (CONFIRMAR):
@@ -63,7 +63,7 @@ public class HeuristicOne extends Heuristic<String, Integer> {
 	}
 
 
-	private int calculateHeuristicTo(GameState state){
+	private int calculateHeuristicTo(SearchNode state){
 
 		int maxPos = (n << 1);
 
@@ -78,7 +78,7 @@ public class HeuristicOne extends Heuristic<String, Integer> {
 
 
 	@Override
-	public Integer getValueTo(GameState state) {
+	public Integer getValueTo(SearchNode state) {
 
 		// se já temos computado esse valor, apenas retornamos
 		Integer val = values.get(state.getId());

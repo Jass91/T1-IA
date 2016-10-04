@@ -59,7 +59,7 @@ public class Game {
 			throw new Exception("Voce precisa ler os dados de entrada antes de resolver o problema");
 
 		// estado inicial;
-		GameState initialState = getInitialState(gameInput.getInitialConfig(), gameInput.getProblemSize());
+		SearchNode initialNode = getInitialState(gameInput.getInitialConfig(), gameInput.getProblemSize());
 
 		// nosso agente
 		Agent agent = null;
@@ -67,23 +67,23 @@ public class Game {
 		// criar o agent escolhido
 		if(gameInput.getAgentType().equals("BL")){
 			System.out.println("*** Busca em largura ***");
-			agent = new BFSAgent(initialState, gameInput.getProblemSize());
+			agent = new BFSAgent(initialNode, gameInput.getProblemSize());
 
 		}else if(gameInput.getAgentType().equals("BP")){
 			System.out.println("*** Busca em profundidade ***");
-			agent = new DFSAgent(initialState, gameInput.getProblemSize());
+			agent = new DFSAgent(initialNode, gameInput.getProblemSize());
 
 		}else if(gameInput.getAgentType().equals("BCU")){
 			System.out.println("*** Busca de custo uniforme ***");
-			agent = new UCFSAgent(initialState, gameInput.getProblemSize());
+			agent = new UCFSAgent(initialNode, gameInput.getProblemSize());
 
 		}else if(gameInput.getAgentType().equals("BPL")){
 			System.out.println("*** Busca em profundidade limitada ***");
-			agent = new LDFSAgent(initialState, gameInput.getProblemSize(), gameInput.getMaxLimit());
+			agent = new LDFSAgent(initialNode, gameInput.getProblemSize(), gameInput.getMaxLimit());
 
 		}else if(gameInput.getAgentType().equals("BPI")){
 			System.out.println("*** Busca em profundidade iterativa ***");
-			agent = new IDFSAgent(initialState, gameInput.getProblemSize(), gameInput.getMaxLimit());
+			agent = new IDFSAgent(initialNode, gameInput.getProblemSize(), gameInput.getMaxLimit());
 
 		}else if(gameInput.getAgentType().equals("A*")){
 			System.out.println("*** Busca A* ***");
@@ -91,22 +91,22 @@ public class Game {
 			// executa o agente de busca guiada com a heuristica 1
 		}else if(gameInput.getAgentType().equals("GBFS1")){
 			System.out.println("*** Busca de melhor escolha com H1 ***");
-			agent = new GBFSAgent(initialState, gameInput.getProblemSize(), new HeuristicOne(gameInput.getProblemSize()));
+			agent = new GBFSAgent(initialNode, gameInput.getProblemSize(), new HeuristicOne(gameInput.getProblemSize()));
 		}
 		// executa o agente de busca guiada com a heuristica 2
 		else if(gameInput.getAgentType().equals("GBFS2")){
 			System.out.println("*** Busca A* ***");
-			agent = new GBFSAgent(initialState, gameInput.getProblemSize(), new HeuristicTwo());
+			agent = new GBFSAgent(initialNode, gameInput.getProblemSize(), new HeuristicTwo());
 		}
 
 
 		// executa o agente escolhido
-		List<GameState> solutionPath = agent.resolve();
+		List<SearchNode> solutionPath = agent.resolve();
 		showData(gameInput, agent, solutionPath);
 
 	}
 
-	private void showData(GameInput gameInput, Agent agent, List<GameState> solutionPath){
+	private void showData(GameInput gameInput, Agent agent, List<SearchNode> solutionPath){
 
 		System.out.println();
 		System.out.println("Tamanho do problema: " + gameInput.getProblemSize());
@@ -120,7 +120,7 @@ public class Game {
 			System.out.println("Nao encontrou solucao");
 		}else{
 			System.out.print("Solucao encontrada: ");
-			showGoalState(agent.getGoalState());
+			showGoalState(agent.getGoalNode());
 
 			System.out.println();
 			System.out.println();
@@ -129,9 +129,9 @@ public class Game {
 	}
 
 	// exibe o estado meta
-	private void showGoalState(GameState goalState){
+	private void showGoalState(SearchNode goalState){
 
-		for(Block block : goalState.getGameConfig()){
+		for(Block block : goalState.getGameState()){
 			BlockType type = block.getType();
 			if(type == BlockType.White){
 				System.out.print("B");
@@ -143,31 +143,31 @@ public class Game {
 		}
 	}
 
-	private GameState getInitialState(String gameInput, int n){
+	private SearchNode getInitialState(String gameInput, int n){
 
 		// configuracao inicial
 		int i = 0;
 		int emptyPos = 0;
 
-		Block[] gameConfig = new Block[(n << 1) + 1];
+		Block[] initialGameState = new Block[(n << 1) + 1];
 		for(char c : gameInput.toCharArray()){
 			if(c == 'B'){
 				Block block = new Block(BlockType.White, i);
-				gameConfig[i] = block;
+				initialGameState[i] = block;
 			}else if(c == 'A'){
 				Block block = new Block(BlockType.Blue, i);
-				gameConfig[i] = block;
+				initialGameState[i] = block;
 			}else if(c == '-'){
 				Block block = new Block(BlockType.Empty, i);
-				gameConfig[i] = block;
+				initialGameState[i] = block;
 				emptyPos = i;
 			}
 
 			i++;
 		}
 
-		// estado inicial;
-		return new GameState(gameConfig, emptyPos, null, null);
+		// no inicial;
+		return new SearchNode(initialGameState, emptyPos, null, null);
 
 	}
 

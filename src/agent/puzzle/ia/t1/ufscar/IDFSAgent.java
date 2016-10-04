@@ -2,7 +2,7 @@ package agent.puzzle.ia.t1.ufscar;
 
 import java.util.List;
 import border.agent.puzzle.ia.t1.ufscar.StackBorder;
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 import general.agent.puzzle.ia.t1.ufscar.TreeAgent;
 
 //agente que executa uma busca em profundidade iterativa
@@ -11,7 +11,7 @@ public class IDFSAgent extends TreeAgent{
 	private int maxLimit;
 	private int depth;
 
-	public IDFSAgent(GameState initialState, int problemSize, int maxLimit) {
+	public IDFSAgent(SearchNode initialState, int problemSize, int maxLimit) {
 		super(initialState, problemSize);
 
 		this.depth = 1;
@@ -26,7 +26,7 @@ public class IDFSAgent extends TreeAgent{
 	 * 
 	 */
 	@Override
-	public List<GameState> resolve(){
+	public List<SearchNode> resolve(){
 
 		int totalOfExploredNodes = 0;
 		int totalOfGeneratedNodes = 0;
@@ -37,7 +37,7 @@ public class IDFSAgent extends TreeAgent{
 			numberOfExploredNodes = 0;
 			numberOfGeneratedNodes = 0;
 			
-			List<GameState> resolution = super.resolve();
+			List<SearchNode> resolution = super.resolve();
 			
 			// atualiza as variaveis (para cada busca conta os estados gerados e explorados)
 			totalOfExploredNodes += numberOfExploredNodes;
@@ -64,7 +64,7 @@ public class IDFSAgent extends TreeAgent{
 	// De acordo com o comportamento geral desse tipo de agente,
 	// o estado sera expandido apenas se n.depth < limit
 	@Override
-	public void expandNode(GameState node){
+	public void expandNode(SearchNode node){
 		if(node.getDepth() < depth){
 			super.expandNode(node);
 		}

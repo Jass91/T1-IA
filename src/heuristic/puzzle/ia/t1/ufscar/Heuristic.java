@@ -2,7 +2,7 @@ package heuristic.puzzle.ia.t1.ufscar;
 
 import java.util.HashMap;
 
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 public abstract class Heuristic<K, V>{
 	
@@ -12,5 +12,5 @@ public abstract class Heuristic<K, V>{
 		values = new HashMap<K, V>();
 	}
 		
-	public abstract Integer getValueTo(GameState state);
+	public abstract Integer getValueTo(SearchNode state);
 }

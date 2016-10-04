@@ -8,7 +8,7 @@ import border.agent.puzzle.ia.t1.ufscar.Border;
 import game.puzzle.ia.t1.ufscar.Action;
 import game.puzzle.ia.t1.ufscar.Block;
 import game.puzzle.ia.t1.ufscar.BlockType;
-import game.puzzle.ia.t1.ufscar.GameState;
+import game.puzzle.ia.t1.ufscar.SearchNode;
 
 // define o comportamento comum a todos os agentes
 public abstract class Agent {
@@ -18,27 +18,27 @@ public abstract class Agent {
 	protected int numberOfExploredNodes;
 	protected int depth;
 	protected Border border;
-	protected GameState initialState;
-	protected GameState goalState;
+	protected SearchNode initialnode;
+	protected SearchNode goalNode;
 
-	public Agent(GameState initialState, int problemSize){
-		this.initialState = initialState;
+	public Agent(SearchNode initialnode, int problemSize){
+		this.initialnode = initialnode;
 		this.problemSize = problemSize;
-		goalState = null;
+		goalNode = null;
 		numberOfExploredNodes = 0;
 		numberOfGeneratedNodes = 0;
 		depth = 0;
 	}
 
-	// executa a acao (troca src com dst), resultando em um novo estado
-	protected GameState move(GameState state, int src, int dst) {
+	// executa a acao (troca src com dst), resultando em um novo no
+	protected SearchNode move(SearchNode node, int src, int dst) {
 
-		Block[] newGameConfig = new Block[(problemSize << 1) + 1];
-		Block[] currentGameConfig = state.getGameConfig();
+		Block[] newGameState = new Block[(problemSize << 1) + 1];
+		Block[] currentGameState = node.getGameState();
 
 		// copia os valores
-		for(int j = 0; j < currentGameConfig.length; j++)
-			newGameConfig[j] = currentGameConfig[j];
+		for(int j = 0; j < currentGameState.length; j++)
+			newGameState[j] = currentGameState[j];
 
 		// custo do movimento
 		int coast = Math.abs(src - dst);
@@ -47,36 +47,36 @@ public abstract class Agent {
 		Action action = new Action(coast, src, dst);
 
 		// executa a ação trocando os blocos
-		newGameConfig[dst] = currentGameConfig[src];
-		newGameConfig[src] = currentGameConfig[dst];
+		newGameState[dst] = currentGameState[src];
+		newGameState[src] = currentGameState[dst];
 
 		// cria o novo estado
-		GameState newState = new GameState(newGameConfig, src, state, action);
+		SearchNode newNode = new SearchNode(newGameState, src, node, action);
 
-		return newState;
+		return newNode;
 
 	}
 
 	// verifica se o estado eh meta
-	protected boolean isGoal(GameState state){
+	protected boolean isGoal(SearchNode node){
 
-		Block[] gameConfig = state.getGameConfig();
-		int n = (2 * problemSize) + 1;
+		Block[] gameState = node.getGameState();
+		int n = (problemSize << 1) + 1;
 
 		for(int i = 1; i < n; i++){
 
-			// se não é objetivo
-			if( (gameConfig[i - 1].getType() == BlockType.Blue) &&
-					(gameConfig[i].getType() == BlockType.White)){
+			// se nao eh objetivo
+			if( (gameState[i - 1].getType() == BlockType.Blue) &&
+					(gameState[i].getType() == BlockType.White)){
 
 				return false;
 
-				// outro caso que não é objetivo
+			// outro caso que nao eh objetivo
 			}else if((i >= 2)){
 
-				if( (gameConfig[i - 1].getType() == BlockType.Empty) &&
-						(gameConfig[i - 2].getType() == BlockType.Blue) &&
-						(gameConfig[i].getType() == BlockType.White)){
+				if( (gameState[i - 1].getType() == BlockType.Empty) &&
+						(gameState[i - 2].getType() == BlockType.Blue) &&
+						(gameState[i].getType() == BlockType.White)){
 
 					return false;
 				}
@@ -87,29 +87,29 @@ public abstract class Agent {
 		return true;
 	}
 
-	protected void addStateToBorder(GameState newState) {
-		this.border.add(newState);
+	protected void addNodeToBorder(SearchNode newNode) {
+		this.border.add(newNode);
 	}
 
-	protected GameState getStateFromBorder() {
+	protected SearchNode getNodeFromBorder() {
 		return this.border.get();
 	}
 
-	// executa a estrat�gia de expans�o do estado (definida na subclasse)
-	protected abstract void expandNode(GameState node);
-	
-	// calcula o caminho do estado meta ate o estado inicial
-	private List<GameState> getSolutionPath(){
+	// executa a estrategia de expansao do no (definida na subclasse)
+	protected abstract void expandNode(SearchNode node);
 
-		if(goalState == null)
+	// calcula o caminho do no meta ate o no inicial
+	private List<SearchNode> getSolutionPath(){
+
+		if(goalNode == null)
 			return null;
 
-		List<GameState> solutionPath = new ArrayList<GameState>();
-		GameState state = goalState;
+		List<SearchNode> solutionPath = new ArrayList<SearchNode>();
+		SearchNode node = goalNode;
 
-		while(state != null){
-			solutionPath.add(state);
-			state = state.getParent();
+		while(node != null){
+			solutionPath.add(node);
+			node = node.getParent();
 		}
 
 		// inverte a lista
@@ -125,24 +125,24 @@ public abstract class Agent {
 	//											//
 	// **************************************** //
 
-	// retorna o caminho encontrado (lista de estados)
-	public List<GameState> resolve(){
+	// retorna o caminho encontrado (lista de nos)
+	public List<SearchNode> resolve(){
 
-		addStateToBorder(initialState);
+		addNodeToBorder(initialnode);
 
-		// enquanto a borda não está vazia
+		// enquanto a borda nao estiver vazia
 		while(border.getSize() > 0){
 
-			// retira um nó da borda
-			GameState state = getStateFromBorder();
+			// retira um no da borda
+			SearchNode node = getNodeFromBorder();
 
 			// se o eh objetivo
-			if(isGoal(state)){
+			if(isGoal(node)){
 
 				// guarda o estado meta
-				goalState = state;
+				goalNode = node;
 
-				// incrementa o numero de nós explorados
+				// incrementa o numero de nos explorados
 				numberOfExploredNodes++;
 
 				// retorna a solução
@@ -150,25 +150,25 @@ public abstract class Agent {
 
 			}
 
-			// inicia a busca a partir do estado
-			expandNode(state);
+			// inicia a busca a partir do no
+			expandNode(node);
 
-			// incrementa o numero de nós explorados
+			// incrementa o numero de nos explorados
 			numberOfExploredNodes++;
 
 		}
 
 		return getSolutionPath();
 	}
-	
+
 	public int getAverageBranchingFactor(){
-		
+
 		if(numberOfExploredNodes == 0)
 			return 0;
-		
+
 		return (numberOfGeneratedNodes / numberOfExploredNodes);
 	}
-	
+
 	public int getNumberOfExploredNodes(){
 		return numberOfExploredNodes;
 	}
@@ -179,27 +179,27 @@ public abstract class Agent {
 
 	// retorna a profundidade do estado meta
 	public int getDepthOfSolution(){
-		return goalState.getDepth();
+		return goalNode.getDepth();
 	}
 
-	public GameState getGoalState() {
-		return goalState;
+	public SearchNode getGoalNode() {
+		return goalNode;
 	}
 
 	public int getSolutionCoast(){
-		return goalState.getCoast();
+		return goalNode.getCoast();
 	}
 
-	// informa as acoes para alcancar o estado meta
+	// informa as acoes para alcancar o no meta
 	public void tellSolution() {
 
-		for(GameState state : getSolutionPath()){
-			if(state.getAction() == null){
+		for(SearchNode node : getSolutionPath()){
+			if(node.getAction() == null){
 				System.out.println("Estado Inicial:");
-				System.out.println(state.toString());
+				System.out.println(node.toString());
 			}else{
-				state.getAction().showMovement();
-				System.out.println(state.toString());
+				node.getAction().showMovement();
+				System.out.println(node.toString());
 			}
 		}
 
