@@ -22,6 +22,7 @@ public class Game {
 
 	public static void main(String[] args) {
 
+		// resolve e mostra a solucao
 		try {
 
 			Game game = new Game();
@@ -29,16 +30,18 @@ public class Game {
 			// le os dados de entrada
 			GameInput gameInput = game.readInput();
 
-			// resolve e mostra a solucao
 			game.resolve(gameInput);
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+
 	}
 
 	public GameInput readInput(){
-		
+
 		GameInput gameInput = new GameInput();
 		try {
 			gameInput.Read();
@@ -88,7 +91,7 @@ public class Game {
 			// executa o agente de busca guiada com a heuristica 1
 		}else if(gameInput.getAgentType().equals("GBFS1")){
 			System.out.println("*** Busca de melhor escolha com H1 ***");
-			agent = new GBFSAgent(initialState, gameInput.getProblemSize(), new HeuristicOne());
+			agent = new GBFSAgent(initialState, gameInput.getProblemSize(), new HeuristicOne(gameInput.getProblemSize()));
 		}
 		// executa o agente de busca guiada com a heuristica 2
 		else if(gameInput.getAgentType().equals("GBFS2")){

@@ -8,34 +8,37 @@ import general.agent.puzzle.ia.t1.ufscar.GraphAgent;
 import heuristic.puzzle.ia.t1.ufscar.Heuristic;
 
 /*
+ * 
  * Agente que executa uma busca informada usando melhor escolha. 
- * 
- * Esse agente utiliza uma função heurística descrita como:
- * 
- * H1: Dado um problema de tamanho N, bastam no máximo X movimentos para alcançar a meta.
+ * Esse agente utiliza uma função heurística dada como entrada:
  * 
  */
 public class GBFSAgent extends GraphAgent implements Comparator<GameState> {
 
-	private Heuristic<?, ?> heuristic;
+	// representa a funcao de avaliacao h(n)
+	private Heuristic<String, Integer> h;
 
-	public GBFSAgent(GameState initialState, int problemSize, Heuristic<?, ?> heuristic) {
+	public GBFSAgent(GameState initialState, int problemSize, Heuristic<String, Integer> heuristic) {
 		super(initialState, problemSize);
 
-		this.heuristic = heuristic;
+		this.h = heuristic;
 		
-		// instancia a borda como uma fila de prioridade segundo a heuristica
+		// instancia a borda como uma fila de prioridade,
+		// cuja a ordem eh dada pela heuristica h(n)
 		this.border = new PriorityQueueBorder(this);
 	}
 
-	// utiliza o valor da heuristica para comparar os estados
+	// utiliza o valor de h(n) para comparar os estados w
+	// entao montar um Heap de acordo com h(n)
 	@Override
 	public int compare(GameState gs1, GameState gs2) {
+				
+		int val1 = (int)h.getValueTo(gs1);
+		int val2 = (int)h.getValueTo(gs2);
 		
-		heuristic.get(gs1.getId());
-		
-		if(gs1.getCoast() < gs2.getCoast()) return 1;
-		if(gs1.getCoast() > gs2.getCoast()) return -1;
+		// monta um heap de maximo
+		if(val1 > val2) return 1;
+		if(val1 < val2) return -1;
 		return 0;
 	}
 }

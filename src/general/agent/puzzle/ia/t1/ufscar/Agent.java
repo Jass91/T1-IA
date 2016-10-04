@@ -136,7 +136,7 @@ public abstract class Agent {
 			// retira um nó da borda
 			GameState state = getStateFromBorder();
 
-			// se o nó é objetivo
+			// se o eh objetivo
 			if(isGoal(state)){
 
 				// guarda o estado meta
