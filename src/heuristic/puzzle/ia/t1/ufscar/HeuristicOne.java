@@ -48,9 +48,9 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
  * 
  * 	h(n) = Xe;
  * 
- * Dessa forma, se h(n) > h(n'), então n é eleito a expansão.
+ * Dessa forma, se h(n) < h(n'), então n é eleito a expansão.
  * 
- * h(n) nesse contexto significa escolher o no com maior possibilidade de movimentacao.
+ * h(n) nesse contexto significa escolher o no com menor possibilidade de movimentacao.
  * 
  */
 public class HeuristicOne extends Heuristic {
@@ -58,10 +58,15 @@ public class HeuristicOne extends Heuristic {
 	private int n;
 
 	public HeuristicOne(int problemSize) {
+		super();
 		this.n = problemSize;
 	}
 
-
+	public HeuristicOne(int problemSize, boolean isMaxBetter) {
+		super(isMaxBetter);
+		this.n = problemSize;
+	}
+	
 	// retorna o numero de possibilidades de movimentacao para o no
 	// executa em tempo constante
 	@Override

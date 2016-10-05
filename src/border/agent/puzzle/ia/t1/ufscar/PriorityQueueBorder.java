@@ -6,13 +6,15 @@ import java.util.NoSuchElementException;
 import game.puzzle.ia.t1.ufscar.SearchNode;
 
 /*
- * Representa a borda em forma de fila de prioridade (heap),
+ * Representa a borda em forma de fila de prioridade (heap de minimo),
  * no qual a ordem dos elementos é dado pelo comparador
- * passado no contrutor desse objeto.
+ * passado no construtor desse objeto.
  * 
- * Essa ordem, resulta em uma busca de custo uniforme ou
- * caso a ordem dos elementos seja decidida por uma funcao heuristica,
- * teremos uma busca guiada de melhor escolha
+ * Seja V[e1] o valor comparado para o elemento e1 e
+ * Seja V[e2] o valor comparado para o elemento e2, entao:
+ *  
+ * Se V[e1] <= V[e2], entao e1 tem maior prioridade que e2 logo
+ * e1 sera retirado antes de e2
  * 
  */
 public class PriorityQueueBorder extends Border {
@@ -131,11 +133,7 @@ public class PriorityQueueBorder extends Border {
     
 	// remove segundo a política de heap
 	@Override
-	public SearchNode get() {
-		if(elements.size() == 0){
-	       throw new NoSuchElementException();
-		}
-		
+	public SearchNode get() {		
 		return remove();
 	}
 

@@ -132,7 +132,7 @@ public abstract class Agent {
 
 		// enquanto a borda nao estiver vazia
 		while(border.getSize() > 0){
-
+		
 			// retira um no da borda
 			SearchNode node = getNodeFromBorder();
 

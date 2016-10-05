@@ -25,6 +25,12 @@ public class HeuristicTwo extends Heuristic {
 	private int n;
 
 	public HeuristicTwo(int problemSize) {
+		super();
+		this.n = problemSize;
+	}
+
+	public HeuristicTwo(int problemSize, boolean isMaxBetter) {
+		super(isMaxBetter);
 		this.n = problemSize;
 	}
 

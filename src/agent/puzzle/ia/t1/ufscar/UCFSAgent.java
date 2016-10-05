@@ -17,9 +17,9 @@ public class UCFSAgent extends GraphAgent implements Comparator<SearchNode> {
 
 	// compara os estados com base no custo
 	@Override
-	public int compare(SearchNode gs1, SearchNode gs2) {
-		if(gs1.getCoast() > gs2.getCoast()) return 1;
-		if(gs1.getCoast() < gs2.getCoast()) return -1;
+	public int compare(SearchNode node1, SearchNode node2) {
+		if(node1.getCoast() > node2.getCoast()) return 1;
+		if(node1.getCoast() < node2.getCoast()) return -1;
 		return 0;
 	}
 

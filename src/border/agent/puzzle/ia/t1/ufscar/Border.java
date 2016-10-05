@@ -24,7 +24,7 @@ public abstract class Border {
     //Just print out the underlying array list.
     @Override
     public String toString() {
-        return elements.toString();
+    	return elements.toString();
     }
     
 	public abstract SearchNode get();

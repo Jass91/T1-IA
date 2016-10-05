@@ -13,34 +13,32 @@ public class TreeAgent extends Agent {
 		expandNodeAsTree(node);
 
 	}
-	
+
 	// executa a acao de expandir o no, porem NAO desconsidera nos ja gerados
-	private void expandNodeAsTree(SearchNode state) {
+	private void expandNodeAsTree(SearchNode node) {
 
-		int emptyPos = state.getEmptyPosition();
-		int n = (2 * problemSize) + 1;
+		// calcula os limites do vetor
+		int n = (problemSize << 1);
+		int emptyPos = node.getEmptyPosition();
+		int li = (emptyPos - problemSize < 0) ? 0 : emptyPos - problemSize;
+		int ls = (emptyPos + problemSize > n) ? n : emptyPos + problemSize;
 
-		// gera todos os filhos do estado atual
-		for(int i = 0; i < n; i++){
+		// gera todos os filhos do no atual
+		// baseado nos movimentos possiveis
+		for(int i = li; i <= ls; i++){
 
 			if(i == emptyPos)
 				continue;
 
-			// custo do movimento
-			int distance = Math.abs(i - emptyPos);
+			// retorna um novo no movendo-se de i para emptyPos a partir do no atual
+			SearchNode newNode = move(node, i, emptyPos);
 
-			// se o movimento eh legal
-			if(distance <= problemSize){
+			// incrementa o numero de nos gerados
+			numberOfGeneratedNodes++;
 
-				// retorna um novo no movendo-se de i para emptyPos a partir do no atual
-				SearchNode newNode = move(state, i, emptyPos);
+			// insere o novo no na borda
+			border.add(newNode);
 
-				// incrementa o numero de nos gerados
-				numberOfGeneratedNodes++;
-
-				// insere o novo no na borda
-				border.add(newNode);
-			}
 		}
 
 	}
