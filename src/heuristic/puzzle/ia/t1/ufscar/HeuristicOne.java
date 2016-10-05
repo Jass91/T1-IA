@@ -53,18 +53,18 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
  * h(n) nesse contexto significa escolher o no com maior possibilidade de movimentacao.
  * 
  */
-public class HeuristicOne extends Heuristic<String, Integer> {
+public class HeuristicOne extends Heuristic {
 
 	private int n;
 
 	public HeuristicOne(int problemSize) {
 		this.n = problemSize;
-		//this.he
 	}
 
 
-	private int calculateHeuristicTo(SearchNode state){
-
+	@Override
+	protected int calculateValueTo(SearchNode state) {
+		
 		int maxPos = (n << 1);
 
 		int pv = state.getEmptyPosition();
@@ -74,26 +74,6 @@ public class HeuristicOne extends Heuristic<String, Integer> {
 		int res = (pv - li) + (ls - pv);
 
 		return res;
-	}
-
-
-	@Override
-	public Integer getValueTo(SearchNode node) {
-
-		// se já temos computado esse valor, apenas retornamos
-		Integer val = values.get(node.getId());
-		if(val != null)
-			return val;
-
-		// senao, calculamos
-		val = calculateHeuristicTo(node);
-
-		// armazenamos
-		values.put(node.getId(), val);
-
-		// e retornamos o valor para esse estado
-		return val;
-
 	}
 
 }

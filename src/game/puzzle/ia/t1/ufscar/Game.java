@@ -95,8 +95,8 @@ public class Game {
 		}
 		// executa o agente de busca guiada com a heuristica 2
 		else if(gameInput.getAgentType().equals("GBFS2")){
-			System.out.println("*** Busca A* ***");
-			agent = new GBFSAgent(initialNode, gameInput.getProblemSize(), new HeuristicTwo());
+			System.out.println("*** Busca de melhor escolha com H2 ***");
+			agent = new GBFSAgent(initialNode, gameInput.getProblemSize(), new HeuristicTwo(gameInput.getProblemSize()));
 		}
 
 
@@ -165,7 +165,7 @@ public class Game {
 
 			i++;
 		}
-
+		
 		// no inicial;
 		return new SearchNode(initialGameState, emptyPos, null, null);
 

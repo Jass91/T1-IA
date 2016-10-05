@@ -16,9 +16,9 @@ import heuristic.puzzle.ia.t1.ufscar.Heuristic;
 public class GBFSAgent extends GraphAgent implements Comparator<SearchNode> {
 
 	// representa a funcao de avaliacao h(n)
-	private Heuristic<String, Integer> h;
+	private Heuristic h;
 
-	public GBFSAgent(SearchNode initialState, int problemSize, Heuristic<String, Integer> heuristic) {
+	public GBFSAgent(SearchNode initialState, int problemSize, Heuristic heuristic) {
 		super(initialState, problemSize);
 
 		this.h = heuristic;
