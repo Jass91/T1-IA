@@ -37,6 +37,6 @@ public class Action {
 	}
 	
 	public void showMovement(){
-		System.out.println("Mova o bloco em R[" + srcPos + "] para R[" + dstPos + "] (custo = " + coast + ")");
+		System.out.print("Mova o bloco em R[" + srcPos + "] para R[" + dstPos + "] (custo = " + coast + ")");
 	}
 }

@@ -14,9 +14,9 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
 public abstract class Agent {
 
 	protected int problemSize;
-	protected int numberOfGeneratedNodes;
-	protected int numberOfExploredNodes;
-	protected int depth;
+	protected long numberOfGeneratedNodes;
+	protected long numberOfExploredNodes;
+	protected long depth;
 	protected Border border;
 	protected SearchNode initialnode;
 	protected SearchNode goalNode;
@@ -71,7 +71,7 @@ public abstract class Agent {
 
 				return false;
 
-			// outro caso que nao eh objetivo
+				// outro caso que nao eh objetivo
 			}else if((i >= 2)){
 
 				if( (gameState[i - 1].getType() == BlockType.Empty) &&
@@ -121,7 +121,7 @@ public abstract class Agent {
 
 	// **************************************** //
 	//											//
-	// AcessÌveis atravÈs da instancia de Agent //
+	// Acessiveis atraves da instancia de Agent //
 	//											//
 	// **************************************** //
 
@@ -132,7 +132,7 @@ public abstract class Agent {
 
 		// enquanto a borda nao estiver vazia
 		while(border.getSize() > 0){
-		
+
 			// retira um no da borda
 			SearchNode node = getNodeFromBorder();
 
@@ -143,7 +143,7 @@ public abstract class Agent {
 				goalNode = node;
 
 				// incrementa o numero de nos explorados
-				numberOfExploredNodes++;
+				//numberOfExploredNodes++;
 
 				// retorna a solu√ß√£o
 				return getSolutionPath();
@@ -161,7 +161,7 @@ public abstract class Agent {
 		return getSolutionPath();
 	}
 
-	public int getAverageBranchingFactor(){
+	public long getAverageBranchingFactor(){
 
 		if(numberOfExploredNodes == 0)
 			return 0;
@@ -169,11 +169,11 @@ public abstract class Agent {
 		return (numberOfGeneratedNodes / numberOfExploredNodes);
 	}
 
-	public int getNumberOfExploredNodes(){
+	public long getNumberOfExploredNodes(){
 		return numberOfExploredNodes;
 	}
 
-	public int getNumberOfGeneratedNodes(){
+	public long getNumberOfGeneratedNodes(){
 		return numberOfGeneratedNodes;
 	}
 
@@ -194,12 +194,17 @@ public abstract class Agent {
 	public void tellSolution() {
 
 		for(SearchNode node : getSolutionPath()){
+
 			if(node.getAction() == null){
-				System.out.println("Estado Inicial:");
+				System.out.print("Estado Inicial: ");
+				System.out.println(node.toString());
+			}
+			else if(node.getId().equals(goalNode.getId())){
+				System.out.print("Estado Meta: ");
 				System.out.println(node.toString());
 			}else{
 				node.getAction().showMovement();
-				System.out.println(node.toString());
+				System.out.println(": " + node.toString());
 			}
 		}
 
