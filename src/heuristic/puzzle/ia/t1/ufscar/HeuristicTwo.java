@@ -8,7 +8,8 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
  * H2:
  *
  * Vamos supor que para qualquer estado E,
- * saibamos a quantidade Dx de pecas azuis a esquerda de alguma peca branca (numero de pecas em posicao errada)
+ * saibamos a quantidade Dx de pecas azuis a esquerda de alguma peca branca,
+ * ou seja, Dx eh o numero de pecas em posicoes erradas.
  * 
  * Consideremos nossa funcao heuristica h(n) descrita como:
  *
@@ -28,7 +29,8 @@ public class HeuristicTwo extends Heuristic {
 	}
 
 
-	// retorna o numero de blocos em posicoes erradas para o no
+	// retorna o numero de blocos em posicoes erradas para o no.
+	// executa em tempo linear
 	@Override
 	protected int calculateValueTo(SearchNode node) {
 

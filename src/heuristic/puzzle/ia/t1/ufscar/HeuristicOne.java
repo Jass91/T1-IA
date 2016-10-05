@@ -62,12 +62,14 @@ public class HeuristicOne extends Heuristic {
 	}
 
 
+	// retorna o numero de possibilidades de movimentacao para o no
+	// executa em tempo constante
 	@Override
-	protected int calculateValueTo(SearchNode state) {
+	protected int calculateValueTo(SearchNode node) {
 		
 		int maxPos = (n << 1);
 
-		int pv = state.getEmptyPosition();
+		int pv = node.getEmptyPosition();
 		int li = (pv - n < 0) ? 0 : pv - n;
 		int ls = (pv + n > maxPos) ? maxPos : pv + n;
 

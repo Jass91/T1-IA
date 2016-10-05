@@ -13,18 +13,22 @@ public abstract class Heuristic{
 	}
 	
 		
-	public int getValueTo(SearchNode state){
+	public int getValueTo(SearchNode n){
 		
-		Integer value = values.get(state.getId());
+		// procura o valor de h(n) no hash
+		Integer value = values.get(n.getId());
 		
+		// se conseguiu, retorna o valor
 		if(value != null)
 			return value;
 		
-		value = calculateValueTo(state);
+		// senao, calcula h(n)
+		value = calculateValueTo(n);
 		
-		// armazena o que foi computado
-		values.put(state.getId(), value);
+		// armazena o que foi computado e
+		values.put(n.getId(), value);
 		
+		// retorna o valor
 		return value;
 	};
 	
