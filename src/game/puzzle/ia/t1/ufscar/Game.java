@@ -31,7 +31,7 @@ public class Game {
 		try {
 
 			System.out.println("**** Puzzle Resolver ****");
-			
+
 			Game game = new Game();
 
 			// simula os dados automaticamente
@@ -79,6 +79,7 @@ public class Game {
 
 		List<String> agents = new LinkedList<String>();
 		agents.add("BL");
+		agents.add("BP");
 		agents.add("BPL");
 		agents.add("BPI");
 		agents.add("BCU");
@@ -107,7 +108,7 @@ public class Game {
 			}
 
 			pw.close();
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,9 +121,9 @@ public class Game {
 		try {
 			GameInput gameInput = new GameInput();
 			gameInput.read();
-			
+
 			return gameInput;
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -205,15 +206,10 @@ public class Game {
 			System.exit(1);
 		}
 
-
 		// executa o agente escolhido
-		List<SearchNode> solutionPath = agent.resolve();
-		showData(gameInput, agent, solutionPath);
+		agent.resolve();
 
-	}
-
-	private void showData(GameInput gameInput, Agent agent, List<SearchNode> solutionPath){
-
+		// mostra os dados
 		System.out.println();
 		System.out.println("Tamanho do problema: " + gameInput.getProblemSize());
 		System.out.println("Estados Gerados: " + agent.getNumberOfGeneratedNodes());
@@ -221,17 +217,24 @@ public class Game {
 		System.out.println("Fator de ramificação medio: " + agent.getAverageBranchingFactor());
 		System.out.println("Custo da Solucao: " + agent.getSolutionCoast());
 		System.out.println("Profundidade da Solucao: " + agent.getDepthOfSolution());
-		if(solutionPath == null){
+		
+		if(agent.getGoalNode() == null){
 			System.out.println();
 			System.out.println("Nao encontrou solucao");
 		}else{
+			
 			System.out.print("Solucao encontrada: ");
+			
+			// converte um no para um estado do jogo
 			showGoalState(agent.getGoalNode());
 
 			System.out.println();
 			System.out.println();
+			
+			// mostra a sequencia de acoes
 			agent.tellSolution();
 		}
+
 	}
 
 	// exibe o estado meta

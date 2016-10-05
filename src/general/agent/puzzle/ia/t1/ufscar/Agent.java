@@ -161,12 +161,8 @@ public abstract class Agent {
 		return getSolutionPath();
 	}
 
-	public long getAverageBranchingFactor(){
-
-		if(numberOfExploredNodes == 0)
-			return 0;
-
-		return (numberOfGeneratedNodes / numberOfExploredNodes);
+	public double getAverageBranchingFactor(){
+		return Math.abs(numberOfGeneratedNodes / numberOfExploredNodes);
 	}
 
 	public long getNumberOfExploredNodes(){
@@ -179,6 +175,10 @@ public abstract class Agent {
 
 	// retorna a profundidade do estado meta
 	public int getDepthOfSolution(){
+		
+		if(goalNode == null)
+			return 0;
+		
 		return goalNode.getDepth();
 	}
 
@@ -187,6 +187,10 @@ public abstract class Agent {
 	}
 
 	public int getSolutionCoast(){
+		
+		if(goalNode == null)
+			return 0;
+		
 		return goalNode.getCoast();
 	}
 
