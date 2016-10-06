@@ -1,8 +1,7 @@
-package heuristic.puzzle.ia.t1.ufscar;
+package game.puzzle.ia.t1.ufscar;
 
-import game.puzzle.ia.t1.ufscar.Block;
-import game.puzzle.ia.t1.ufscar.BlockType;
-import game.puzzle.ia.t1.ufscar.SearchNode;
+import general.search.agent.ia.SearchNode;
+import general.search.heuristic.ia.Heuristic;
 
 /*
  * H2:
@@ -15,7 +14,7 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
  *
  * 	h(n) = Dx;
  * 
- * Dessa forma, se um nó possui h(n) < h(n'), então n é eleito a expansao.
+ * Dessa forma, se um nï¿½ possui h(n) < h(n'), entï¿½o n ï¿½ eleito a expansao.
  * 
  * h(n) nesse contexto significa escolher os nos com menor numero de pecas em posicoes erradas.
  * 
@@ -40,12 +39,14 @@ public class HeuristicTwo extends Heuristic {
 	@Override
 	protected int calculateValueTo(SearchNode node) {
 
+		PuzzleState state = (PuzzleState) node.getState();
+		
 		int i = 0;
 		int j = 0;
 		int size = (n << 1) + 1;
 		int numberOfWrongBlocks = 0;
-		int emptPos = node.getEmptyPosition();
-		Block []gameState = node.getGameState();
+		int emptPos = state.getEmptyPosition();
+		Block []gameState = state.getDescription();
 
 		while(j < size){
 			

@@ -1,6 +1,7 @@
-package heuristic.puzzle.ia.t1.ufscar;
+package game.puzzle.ia.t1.ufscar;
 
-import game.puzzle.ia.t1.ufscar.SearchNode;
+import general.search.agent.ia.SearchNode;
+import general.search.heuristic.ia.Heuristic;
 
 /*
  * H0 (CONFIRMAR):
@@ -8,16 +9,16 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
  * de qualquer posicao para a posicao vazia.
  *
  * Vamos supor tambem que para qualquer estado
- * saibamos a distancia de cada peca Xi em relacao ao espaço vazio Ev,
+ * saibamos a distancia de cada peca Xi em relacao ao espaï¿½o vazio Ev,
  * calculada como abs(posicao(Xi) - posicao(Ev)).
  * 
  * Consideremos nossa funcao heuristica h(n) descrita como:
- * A soma das distancias Di de cada peça Xi em relacao a Ev
+ * A soma das distancias Di de cada peï¿½a Xi em relacao a Ev
  * entao:
  * 
  * 	h(n) = D1 + D2 + ... + DN, onde N = 2n + 1;
  * 
- * Dessa forma, se um nó possui h(n) < h(n'), então n é eleito a expansão.
+ * Dessa forma, se um nï¿½ possui h(n) < h(n'), entï¿½o n ï¿½ eleito a expansï¿½o.
  * 
  * h(n) nesse contexto significa escolher os nos com menor custo de movimentacao.
  * 
@@ -48,7 +49,7 @@ import game.puzzle.ia.t1.ufscar.SearchNode;
  * 
  * 	h(n) = Xe;
  * 
- * Dessa forma, se h(n) < h(n'), então n é eleito a expansão.
+ * Dessa forma, se h(n) < h(n'), entï¿½o n ï¿½ eleito a expansï¿½o.
  * 
  * h(n) nesse contexto significa escolher o no com menor possibilidade de movimentacao.
  * 
@@ -72,13 +73,14 @@ public class HeuristicOne extends Heuristic {
 	@Override
 	protected int calculateValueTo(SearchNode node) {
 		
+		PuzzleState state = (PuzzleState) node.getState();
+		
+		int emptyPos = state.getEmptyPosition();
 		int maxPos = (n << 1);
+		int li = (emptyPos - n < 0) ? 0 : emptyPos - n;
+		int ls = (emptyPos + n > maxPos) ? maxPos : emptyPos + n;
 
-		int pv = node.getEmptyPosition();
-		int li = (pv - n < 0) ? 0 : pv - n;
-		int ls = (pv + n > maxPos) ? maxPos : pv + n;
-
-		int res = (pv - li) + (ls - pv);
+		int res = (emptyPos - li) + (ls - emptyPos);
 
 		return res;
 	}

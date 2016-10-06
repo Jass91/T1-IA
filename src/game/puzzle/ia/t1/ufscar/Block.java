@@ -27,4 +27,7 @@ public class Block {
 		return this.id;
 	}
 	
+	public String toString(){
+		return String.valueOf(type.getValueAsChar());
+	}
 }
