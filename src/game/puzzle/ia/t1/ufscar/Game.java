@@ -117,6 +117,10 @@ public class Game {
 	// informa as acoes para alcancar o no meta
 	public void tellSolution(List<SearchNode> solutionPath) {
 
+		if(solutionPath == null){
+			return;
+		}
+		
 		for(SearchNode node : solutionPath){
 
 			if(node.getAction() == null){
