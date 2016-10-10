@@ -14,7 +14,7 @@ import general.search.heuristic.ia.Heuristic;
  *
  * 	h(n) = Dx;
  * 
- * Dessa forma, se um n� possui h(n) < h(n'), ent�o n � eleito a expansao.
+ * Dessa forma, se um n� possui h(n) < h(n'), entao n eh eleito a expansao.
  * 
  * h(n) nesse contexto significa escolher os nos com menor numero de pecas em posicoes erradas.
  * 

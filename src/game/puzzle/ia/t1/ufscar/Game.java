@@ -68,10 +68,10 @@ public class Game {
 			agent = new DFSAgent(puzzleRule);
 		}else if(gameInput.getAgentType().equals("BCU")){
 			agent = new UCFSAgent(puzzleRule);
-		}else if(gameInput.getAgentType().equals("BPL")){
+		}else if(gameInput.getAgentType().contains("BPL")){
 			agent = new LDFSAgent(puzzleRule, gameInput.getMaxLimit());
 		}else if(gameInput.getAgentType().equals("BPI")){
-			agent = new IDFSAgent(puzzleRule, gameInput.getMaxLimit());
+			agent = new IDFSAgent(puzzleRule);
 		}else if(gameInput.getAgentType().equals("A*(h1)")){
 			agent = new AStarAgent(puzzleRule, new HeuristicOne(gameInput.getProblemSize()));
 		}else if(gameInput.getAgentType().equals("A*(h2)")){;

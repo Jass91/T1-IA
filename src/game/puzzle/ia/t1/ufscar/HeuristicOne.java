@@ -49,7 +49,7 @@ import general.search.heuristic.ia.Heuristic;
  * 
  * 	h(n) = Xe;
  * 
- * Dessa forma, se h(n) < h(n'), ent�o n � eleito a expans�o.
+ * Dessa forma, se h(n) < h(n'), entao n eh eleito a expansao.
  * 
  * h(n) nesse contexto significa escolher o no com menor possibilidade de movimentacao.
  * 

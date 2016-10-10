@@ -66,7 +66,7 @@ public class GameInput {
 		//System.out.print("Tipo de busca (BL, BP, BPL, BPI, BCU, A*): ");
 		agentType = scanner.next();
 
-		if(agentType.equals("BPL") || agentType.equals("BPI")){
+		if(agentType.equals("BPL")){
 			//System.out.print("Limite maximo: ");
 			maxLimit = scanner.nextInt();
 		}
