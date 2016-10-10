@@ -1,12 +1,7 @@
 package game.puzzle.ia.t1.ufscar;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import general.search.agent.ia.Agent;
 import general.search.agent.ia.DomainRules;
@@ -35,86 +30,72 @@ public class Game {
 
 			Game game = new Game();
 
-			// simula os dados automaticamente
-			//game.GenerateInputFile(4);
-
 			// le os dados de entrada
 			GameInput gameInput = game.readInput();
 
-			game.resolve(gameInput);
+			// define regras para o domimio especifico (o jogo da regua)
+			DomainRules puzzleRule = new PuzzleRules(gameInput.getInitialConfig(), gameInput.getProblemSize());
+
+			// obtem o agente desejado (BL, BP, ...)
+			Agent agent = game.getAgent(gameInput, puzzleRule);
+
+			// executa o agente
+			List<SearchNode> solutionPath = agent.resolve();
+			
+			// exibe os dados
+			game.mostraDados(agent, gameInput);
+						
+			// mostra a sequencia de acoes
+			game.tellSolution(solutionPath);
 
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void GenerateInputFile(int problemSize){
+	public Agent getAgent(GameInput gameInput, DomainRules puzzleRule) throws Exception {
 
-		int n = 2 * problemSize + 1;
-		char []initialState = new char[n];
+		if(gameInput == null)
+			throw new Exception("Voce precisa ler os dados de entrada antes de resolver o problema");
 
-		initialState[0] = '-';
+		// nosso agente
+		Agent agent = null;
 
-		for(int i = 1; i <= problemSize; i++){
-			initialState[i] = 'B';
+		// criar o agent escolhido
+		if(gameInput.getAgentType().equals("BL")){
+			agent = new BFSAgent(puzzleRule);
+		}else if(gameInput.getAgentType().equals("BP")){
+			agent = new DFSAgent(puzzleRule);
+		}else if(gameInput.getAgentType().equals("BCU")){
+			agent = new UCFSAgent(puzzleRule);
+		}else if(gameInput.getAgentType().equals("BPL")){
+			agent = new LDFSAgent(puzzleRule, gameInput.getMaxLimit());
+		}else if(gameInput.getAgentType().equals("BPI")){
+			agent = new IDFSAgent(puzzleRule, gameInput.getMaxLimit());
+		}else if(gameInput.getAgentType().equals("A*(h1)")){
+			agent = new AStarAgent(puzzleRule, new HeuristicOne(gameInput.getProblemSize()));
+		}else if(gameInput.getAgentType().equals("A*(h2)")){;
+		agent = new AStarAgent(puzzleRule, new HeuristicTwo(gameInput.getProblemSize()));
+		}else if(gameInput.getAgentType().equals("GBFS(h1)")){
+
+			// passando true para a heuristica,
+			// faz com que a fila de prioridade seja um heap de maximo,
+			// onde valores maiores de h(n) tem maior prioridade
+			agent = new GBFSAgent(puzzleRule, new HeuristicOne(gameInput.getProblemSize()));
+		}
+		// executa o agente de busca guiada com a heuristica 2
+		else if(gameInput.getAgentType().equals("GBFS(h2)")){
+
+			// a omissao do parametro booleano ou indicar um valor falso para a heuristica,
+			// faz com que a fila de prioridade seja um heap de minimo,
+			// onde valores menores de h(n) tem maior prioridade
+			agent = new GBFSAgent(puzzleRule, new HeuristicTwo(gameInput.getProblemSize()));
 		}
 
-		for(int i = problemSize + 1; i < n; i++){
-			initialState[i] = 'A';
-		}
+		if(agent == null)
+			throw new Exception("Tipo de agente inválido");
 
-		// embaralha trocando a posicao i com j
-		Random r = new Random();
-		for(int i = 0; i < n; i++){
-
-			int j = r.nextInt(n);
-
-			char temp = initialState[i];
-			initialState[i] = initialState[j];
-			initialState[j] = temp;
-
-		}
-
-		String state = new String(initialState);
-		int maxLimit = r.nextInt(10);
-
-		List<String> agents = new LinkedList<String>();
-		agents.add("BL");
-		agents.add("BP");
-		agents.add("BPL");
-		agents.add("BPI");
-		agents.add("BCU");
-		agents.add("H1A*");
-		agents.add("H2A*");
-		agents.add("GBFS1");
-		agents.add("GBFS2");
-
-		try {
-
-			String sys = System.getProperty("user.home");
-
-			String fileurl = sys + "\\Desktop\\puzzle_in.txt";
-			File f = new File(fileurl);
-			PrintWriter pw;
-			pw = new PrintWriter(f);
-
-			for(String agent : agents){
-				pw.println(problemSize);
-				pw.println(state);
-				pw.println(agent);
-				if(agent.equals("BPL") || agent.equals("BPI"))
-				{
-					pw.println(maxLimit);
-				}
-			}
-
-			pw.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		return agent;
 	}
 
 	public GameInput readInput(){
@@ -132,79 +113,24 @@ public class Game {
 		return null;
 	}
 
-	public void resolve(GameInput gameInput) throws Exception{
+	
+	// informa as acoes para alcancar o no meta
+	public void tellSolution(List<SearchNode> solutionPath) {
 
-		if(gameInput == null)
-			throw new Exception("Voce precisa ler os dados de entrada antes de resolver o problema");
+		for(SearchNode node : solutionPath){
 
-		// nosso agente
-		Agent agent = null;
-
-		// define regras para esse domimio especifico
-		DomainRules puzzleRule = new PuzzleRules(gameInput.getInitialConfig(), gameInput.getProblemSize());
-
-		// criar o agent escolhido
-		if(gameInput.getAgentType().equals("BL")){
-
-			System.out.println("*** Busca em largura ***");
-			agent = new BFSAgent(puzzleRule);
-
-		}else if(gameInput.getAgentType().equals("BP")){
-
-			System.out.println("*** Busca em profundidade ***");
-			agent = new DFSAgent(puzzleRule);
-
-		}else if(gameInput.getAgentType().equals("BCU")){
-
-			System.out.println("*** Busca de custo uniforme ***");
-			agent = new UCFSAgent(puzzleRule);
-
-		}else if(gameInput.getAgentType().equals("BPL")){
-
-			System.out.println("*** Busca em profundidade limitada ***");
-			agent = new LDFSAgent(puzzleRule, gameInput.getMaxLimit());
-
-		}else if(gameInput.getAgentType().equals("BPI")){
-
-			System.out.println("*** Busca em profundidade iterativa ***");
-			agent = new IDFSAgent(puzzleRule, gameInput.getMaxLimit());
-
-		}else if(gameInput.getAgentType().equals("H1A*")){
-
-			System.out.println("*** Busca A* usando H1 ***");
-			agent = new AStarAgent(puzzleRule, new HeuristicOne(gameInput.getProblemSize()));
-
-		}else if(gameInput.getAgentType().equals("H2A*")){
-
-			System.out.println("*** Busca A* usando H2 ***");
-			agent = new AStarAgent(puzzleRule, new HeuristicTwo(gameInput.getProblemSize()));
-
-			// executa o agente de busca guiada com a heuristica 1
-		}else if(gameInput.getAgentType().equals("GBFS1")){
-
-			System.out.println("*** Busca de melhor escolha usando H1 ***");
-
-			// passando true para a heuristica,
-			// faz com que a fila de prioridade seja um heap de maximo,
-			// onde valores maiores de h(n) tem maior prioridade
-			agent = new GBFSAgent(puzzleRule, new HeuristicOne(gameInput.getProblemSize()));
-		}
-		// executa o agente de busca guiada com a heuristica 2
-		else if(gameInput.getAgentType().equals("GBFS2")){
-
-			System.out.println("*** Busca de melhor escolha usando H2 ***");
-
-			// a omissao do parametro booleano ou indicar um valor falso para a heuristica,
-			// faz com que a fila de prioridade seja um heap de minimo,
-			// onde valores menores de h(n) tem maior prioridade
-			agent = new GBFSAgent(puzzleRule, new HeuristicTwo(gameInput.getProblemSize()));
-		}else{
-			System.out.println("Invalid agent type");
-			System.exit(1);
+			if(node.getAction() == null){
+				System.out.print("Estado Inicial: ");
+				System.out.println(node.getState().toString());
+			}else{
+				node.getAction().showMovement();
+				System.out.println(": " + node.toString());
+			}
 		}
 
-		// executa o agente escolhido
-		agent.resolve();
+	}
+	
+	public void mostraDados(Agent agent, GameInput gameInput){
 
 		// mostra os dados
 		System.out.println();
@@ -223,31 +149,10 @@ public class Game {
 			System.out.print("Solucao encontrada: ");
 
 			// converte um no para um estado do jogo
-			showGoalState(agent.getGoalNode());
+			System.out.print(agent.getGoalNode().getState().toString());
 
 			System.out.println();
 			System.out.println();
-
-			// mostra a sequencia de acoes
-			agent.tellSolution();
-		}
-
-	}
-
-	// exibe o estado meta
-	private void showGoalState(SearchNode goalState){
-
-		PuzzleState state = (PuzzleState) goalState.getState();
-		for(Block block : state.getDescription()){
-			BlockType type = block.getType();
-			if(type == BlockType.White){
-				System.out.print("B");
-			}else if(type == BlockType.Blue){
-				System.out.print("A");
-			}else if(type == BlockType.Empty){
-				System.out.print("-");
-			}
 		}
 	}
-
 }
