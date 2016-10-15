@@ -57,7 +57,7 @@ public class GameInput {
 
 		Scanner scanner = new Scanner(System.in);
 
-		//System.out.print("Tamanho do problema: ");
+		// le o tipo de agente
 		problemSize = scanner.nextInt();
 
 		//System.out.println("Estado inicial: ");
